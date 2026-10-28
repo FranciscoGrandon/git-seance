@@ -285,8 +285,10 @@ class TestGitSeanceCore(unittest.TestCase):
         """Verifies GitHub Actions PR markdown summary generation."""
         ghosts = git_seance.get_fallback_tombstones()
         md = git_seance.generate_ci_markdown_summary(ghosts)
+        self.assertIn("<!-- git-seance-ofrenda -->", md)
         self.assertIn("## 🌼🕯️ Digital Ofrenda Memorial — Departed Code Report", md)
         self.assertIn("Tombstone SHA", md)
+        self.assertIn("📜 Documented Git Commit", md)
         self.assertIn("<details><summary>📜 Inspect Departed Diff Tombstones</summary>", md)
         self.assertIn("```diff", md)
         for g in ghosts:
@@ -493,10 +495,11 @@ class TestGitSeanceCLI(unittest.TestCase):
         self.assertNotIn("SyntaxWarning", res.stderr)
 
     def test_cli_ci_summary(self):
+        # En un repo sin borrados detectables, no debe inventar lápidas de fallback
         res = self._run_cli(["--ci-summary"])
         self.assertEqual(res.returncode, 0)
         self.assertIn("Digital Ofrenda Memorial", res.stdout)
-        self.assertIn("<details><summary>", res.stdout)
+        self.assertIn("No departed functions found in recent commits", res.stdout)
         self.assertNotIn("SyntaxWarning", res.stderr)
 
     def test_cli_symbol_selection(self):
