@@ -719,7 +719,7 @@ def summon_gemma_spirit(
                 "model": model_name,
                 "prompt": f"{system_prompt}\nDeveloper question: {question}\nSpirit response:",
                 "stream": False,
-                "options": {"temperature": 0.25},
+                "options": {"temperature": 0.25, "num_predict": 128},
             }
         ).encode("utf-8")
 
@@ -729,7 +729,7 @@ def summon_gemma_spirit(
             headers={"Content-Type": "application/json"},
         )
         try:
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            with urllib.request.urlopen(req, timeout=30) as resp:
                 body = json.loads(resp.read().decode("utf-8"))
                 reply = body.get("response", "").strip()
                 tokens = int(body.get("eval_count", len(reply.split())))
