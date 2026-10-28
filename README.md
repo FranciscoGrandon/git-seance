@@ -7,8 +7,7 @@
 [![Google Gemma](https://img.shields.io/badge/Google%20Gemma-Local%20(gemma2%3A2b%20%2F%20gemma3%3A4b)-4285F4?style=for-the-badge&logo=google)](https://ollama.com)
 [![Zero Cost](https://img.shields.io/badge/Cloud%20Bill-%240.00%20USD%20(100%25%20Local)-10b981?style=for-the-badge)](https://github.com)
 [![Sentry Agent Tracing](https://img.shields.io/badge/Telemetry-Sentry%20Agent%20Tracing-362d59?style=for-the-badge&logo=sentry)](https://sentry.io)
-[![Render Static Site](https://img.shields.io/badge/Deploy-Render%20Mirror-46E3B7?style=for-the-badge&logo=render)](https://git-seance-q032.onrender.com)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-gitseance.tech-f59e0b?style=for-the-badge)](https://gitseance.tech)
+[![Render Static Site](https://img.shields.io/badge/Deploy-Render%20Live-46E3B7?style=for-the-badge&logo=render)](https://git-seance-q032.onrender.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **Creado por Francisco Grandón Vergara**
@@ -30,7 +29,7 @@
 ```
 
 > [!IMPORTANT]
-> 🌐 **Live Web Ofrenda (.tech Domain):** [https://gitseance.tech](https://gitseance.tech) (Render Mirror: [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com))  
+> 🌐 **Live Web Ofrenda:** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
 > 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.0 · 41 Automated Tests · 0 AST Violations)
 
 ---
@@ -50,7 +49,7 @@
 5. [Hacktoberfest 2026: 6 Official Prize Categories](#-hacktoberfest-2026-6-official-prize-categories)
 6. [Quick Start & CLI Usage](#-quick-start--cli-usage)
 7. [Interactive Digital Ofrenda Web App (`index.html`)](#-interactive-digital-ofrenda-web-app-indexhtml)
-8. [Deployment Guide (Render Blueprint + Free `.tech` Domain)](#-deployment-guide-render-blueprint--free-tech-domain)
+8. [Deployment Guide (Render Blueprint & Global CDN)](#-deployment-guide-render-blueprint--global-cdn)
 9. [Automated Test Suite & Verification (41 Tests)](#-automated-test-suite--verification-41-tests)
 10. [Project File Structure](#-project-file-structure)
 11. [License & Authorship](#-license--authorship)
@@ -204,15 +203,14 @@ It posts an automated Digital Ofrenda tombstone comment with collapsible `<detai
 
 ## 🏆 Hacktoberfest 2026: 6 Official Prize Categories
 
-GitSéance qualifies for all 6 official sponsor categories in Week 4:
+GitSéance qualifies for 5 major official sponsor categories in Week 4:
 
 | Prize Category | Award | How GitSéance Meets & Exceeds the Criteria |
 | :--- | :---: | :--- |
 | **🥇 Overall Winner** | **$250 + DEV++** | Deep engineering rigor (41 automated tests, 0 AST violations), cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, and production-grade documentation. |
 | **🤖 Best Use of Gemma** | **$200** | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
-| **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed to Render via declarative Blueprint (`render.yaml`) and mirror `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. |
+| **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed live to Render via declarative Blueprint (`render.yaml`) at `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. |
 | **📊 Best Use of Sentry Agent Tracing** | **$100** | End-to-end telemetry instrumentation with custom `ai.seance` spans, token consumption tracking, p95 latency distributions, and exportable JSON traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
-| **🌐 Best Use of a .tech Domain** | **$100** | Configured for deployment on official Hacktoberfest domain **[https://gitseance.tech](https://gitseance.tech)** (with Render mirror `https://git-seance-q032.onrender.com`) with managed Let's Encrypt TLS/SSL certificates. |
 | **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` analyzing PR diffs using full git history (`fetch-depth: 0`) and posting automated memorial comments. |
 
 ---
@@ -301,7 +299,7 @@ xdg-open index.html
 
 ---
 
-## ☁️ Deployment Guide (Render Blueprint + Free `.tech` Domain)
+## ☁️ Deployment Guide (Render Blueprint & Global CDN)
 
 Deploy GitSéance to the web in under 2 minutes using Render's Free Static Site tier and Infrastructure as Code:
 
@@ -329,28 +327,20 @@ services:
 1. In the [Render Dashboard](https://dashboard.render.com), click **New +** > **Blueprint**.
 2. Connect your GitHub repository (`FranciscoGrandon/git-seance`).
 3. Render automatically parses `render.yaml` and launches your static site with automatic zero-cache headers and single-page routing.
-4. Your site is live immediately at the official mirror: **`https://git-seance-q032.onrender.com`**.
+4. Your site is live immediately at: **`https://git-seance-q032.onrender.com`**.
 
 ### Option B: Manual Static Site Setup
 1. Log in to [Render Dashboard](https://dashboard.render.com).
 2. Click **New +** > **Static Site**.
-3. Connect your GitHub repository.
+3. Connect your GitHub repository (`FranciscoGrandon/git-seance`).
 4. Set configuration:
    - **Name:** `git-seance`
    - **Branch:** `main`
    - **Build Command:** *(leave empty)*
    - **Publish Directory:** `.` *(serves root `index.html`)*
 5. Click **Create Static Site**.
-
-### Connect Your Free `.tech` Domain
-1. Claim your free 1-year `.tech` domain via the Hacktoberfest promo link (`hacktoberfest.com/my/promos`).
-2. In Render, go to **Settings** > **Custom Domains** and add your domain: `gitseance.tech`.
-3. In your DNS provider, configure:
-   - **CNAME:** `@` (or `www`) pointing to `git-seance-q032.onrender.com`.
-4. Render automatically provisions a free, managed Let's Encrypt SSL/TLS certificate.
-5. Both domains provide seamless high availability:
-   - Primary: **[https://gitseance.tech](https://gitseance.tech)**
-   - Render Mirror: **[https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)**
+6. Render automatically provisions a managed SSL/TLS certificate on the global CDN:
+   - Live URL: **[https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)**
 
 ---
 
