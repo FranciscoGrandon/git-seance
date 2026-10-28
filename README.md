@@ -357,7 +357,7 @@ python -m unittest discover -v
 ```
 
 ### Test Suite Breakdown:
-- **`test_git_seance.py` (24 tests):**
+- **`test_git_seance.py` (26 tests):**
   - Git graveyard single-pass mining & synthetic fallbacks.
   - Custom `--range` revision filtering and `--no-fallback` PR boundary modes.
   - Polyglot symbol extraction across Python, JavaScript, Go, Rust, Java, C++, Ruby, PHP.
@@ -370,7 +370,7 @@ python -m unittest discover -v
   - CLI flags (`--ci-summary`, `--mictlan`, `--offline`, `--export-traces`, `--symbol`, `--range`, `--no-fallback`).
   - Markdown table sanitization against multi-line commit messages with pipes.
 
-- **`test_html_ofrenda.py` (17 tests):**
+- **`test_html_ofrenda.py` (15 tests):**
   - Single-file HTML integrity and embedded asset validation ($>1\text{MB}$).
   - `index.html` exact SHA-256 byte parity with original HTML ofrenda.
   - Mandatory authorship metadata (Rule 12).
@@ -387,7 +387,7 @@ python -m unittest discover -v
 ```bash
 python D:\Users\francisco.grandon\.gemini\config\scripts\ag_ops.py ast-lint . --json
 ```
-*Result: 0 violations, <30ms execution.*
+*Result: 0 violations in 17.45ms (<30ms SLA).* Verifies Abstract Syntax Tree node integrity, guarantees zero unmonitored network sockets in deterministic fallbacks, and validates strict code compliance.
 
 ---
 

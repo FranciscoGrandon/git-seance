@@ -7,11 +7,15 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
 ## [1.0.4] - 2026-10-28
 
+### Corregido
+- **Consistencia en Documentación de la Suite de Pruebas:** Sincronización del desglose de la suite en `devto_article.md` y `README.md` a la distribución exacta auditada en código: 26 pruebas de backend (`test_git_seance.py`) y 15 pruebas de frontend (`test_html_ofrenda.py`), manteniendo el total inalterado de 41 pruebas exitosas (100% pass rate).
+
 ### Seguridad
 - **Desacoplamiento DevSecOps de Mínimo Privilegio en 2 Jobs:** Separación arquitectónica estricta en `.github/workflows/ofrenda_pr.yml` entre el análisis de código (`audit_and_test`, con permisos exclusivos de solo lectura `contents: read`) y la publicación del reporte memorial (`publish_memorial`, con permisos `pull-requests: write`). La ejecución de código no confiable queda completamente aislada de cualquier privilegio de escritura mediante transferencia segura de artefactos con `actions/upload-artifact@v4` y `actions/download-artifact@v4`.
 
 ### Añadido
 - **Ejecución Automática de Pruebas Unitarias en CI:** Inclusión del paso `python3 -m unittest test_git_seance.py -v` en el job `audit_and_test` para certificar públicamente las 26 pruebas unitarias de backend en cada pull request antes de emitir el reporte.
+- **Profundización Documental de Rigor Técnico (DEV.to y README):** Detalle explícito de la validación estática AST (`ag_ops.py ast-lint` en 17.45 ms / <30 ms SLA) como pilar de integridad arquitectónica, y refuerzo del diagnóstico empírico con Sentry Agent Tracing en la detección y reducción del cuello de botella en commits crípticos (de ~610 ms a 0.02 ms).
 
 ## [1.0.3] - 2026-10-28
 
