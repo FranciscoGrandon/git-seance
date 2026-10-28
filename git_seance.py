@@ -168,13 +168,19 @@ CRYPTIC_KEYWORDS: Set[str] = {
     "lint",
     "typo",
     "oops",
+    "merge",
+    "merges",
+    "review",
+    "comments",
+    "address",
+    "feedback",
 }
 
 # Wrapping "wip" in Conventional Commits (`chore(core): wip`) doesn't make it
 # documentation; it just puts a tuxedo on a shrug.
 CRYPTIC_REGEX = re.compile(
     r"^(?:(?:chore|fix|feat|refactor|style|docs|test)(?:\([^)]*\))?:\s*)?"
-    r"(?:wip|fix(?:es)?|clean\s*up|update(?:s)?|temp|tmp|minor|stuff|misc|changes|test(?:ing)?|lint)\W*$",
+    r"(?:wip|fix(?:es)?|clean\s*up|update(?:s)?|temp|tmp|minor|stuff|misc|changes|test(?:ing)?|lint|merge.*|address.*review.*|review\s*comments?)\W*$",
     re.IGNORECASE,
 )
 
@@ -204,7 +210,8 @@ class DepartedCodeGhost:
         if self.is_quine_relic:
             return False
         clean = self.commit_message.strip().lower()
-        if len(clean) < 12 or clean in CRYPTIC_KEYWORDS or bool(CRYPTIC_REGEX.match(clean)):
+        # Mensajes de menos de 10 caracteres o tokens de relleno
+        if len(clean) < 10 or clean in CRYPTIC_KEYWORDS or bool(CRYPTIC_REGEX.match(clean)):
             return True
         words = [w for w in re.split(r"\W+", clean) if w]
         return len(words) <= 2 and all(w in CRYPTIC_KEYWORDS for w in words)
@@ -452,7 +459,7 @@ def mine_git_graveyard(
         return get_fallback_tombstones()[:limit] if allow_fallback else []
 
     ghosts: List[DepartedCodeGhost] = []
-    seen_symbols: Set[str] = set()
+    seen_symbols: Set[Tuple[str, str]] = set()
 
     raw_commits = [chunk for chunk in raw_stream.split(commit_marker) if chunk.strip()]
     for commit_chunk in raw_commits:
@@ -498,10 +505,11 @@ def mine_git_graveyard(
             ast_confirmed = _extract_python_ast_symbols(removed_buf) if fpath.endswith(".py") else set()
 
             for sym_name, start_idx in sym_entries:
-                if sym_name in commit_added_syms or sym_name in seen_symbols:
+                symbol_key = (fpath, sym_name)
+                if sym_name in commit_added_syms or symbol_key in seen_symbols:
                     continue
 
-                seen_symbols.add(sym_name)
+                seen_symbols.add(symbol_key)
                 snippet = removed_buf[start_idx : start_idx + 14]
                 # Bonus candles if the deleted hunk was clean enough to parse as a valid AST.
                 is_ast_ok = sym_name in ast_confirmed or (
@@ -648,15 +656,15 @@ def build_deterministic_fallback_reply(ghost: DepartedCodeGhost, question: str) 
 
 def _record_sentry_span(trace_span: SeanceTraceSpan) -> None:
     """
-    Pushes trace telemetry to Sentry across both modern (`start_span`) and legacy
-    (`start_transaction`) SDK versions, because SDK deprecations move faster than
-    the dead.
+    Pushes trace telemetry to Sentry across modern 2.x SDK (creating a root transaction
+    so spans actually emit) and legacy SDKs.
     """
     if not SENTRY_ACTIVE:
         return
     try:
-        start_fn = getattr(sentry_sdk, "start_span", None) or getattr(
-            sentry_sdk, "start_transaction", None
+        # En Sentry SDK 2.x, start_transaction garantiza que el evento se envíe al servidor
+        start_fn = getattr(sentry_sdk, "start_transaction", None) or getattr(
+            sentry_sdk, "start_span", None
         )
         if start_fn:
             with start_fn(
@@ -669,6 +677,10 @@ def _record_sentry_span(trace_span: SeanceTraceSpan) -> None:
                 span.set_tag("ast_quine_verified", str(trace_span.ast_quine_verified))
                 span.set_data("latency_ms", trace_span.latency_ms)
                 span.set_data("tokens_generated", trace_span.tokens_generated)
+        # Forzar el envío inmediato para evitar que se pierdan spans al cerrar el CLI
+        flush_fn = getattr(sentry_sdk, "flush", None)
+        if flush_fn:
+            flush_fn(timeout=2.0)
     except Exception:
         pass
 
@@ -926,7 +938,7 @@ def main() -> int:
         repo_path=args.repo,
         limit=max(1, args.limit),
         revision_range=args.range,
-        allow_fallback=not args.no_fallback,
+        allow_fallback=not (args.no_fallback or args.ci_summary),
     )
 
     if args.mictlan:
