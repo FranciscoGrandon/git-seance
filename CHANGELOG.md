@@ -8,6 +8,7 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 ## [1.0.4] - 2026-10-28
 
 ### Añadido
+- **Render Full-Stack Python Web Service & Zero-Downtime Health Checks:** Creación de `server.py` y refactorización de `render.yaml` a servicio web dinámico en Python. Implementación de endpoint de orquestación `/healthz`, endpoints REST de arqueología git (`/api/ghosts`, `POST /api/seance`), cabeceras de seguridad OWASP estrictas (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`) y suite de pruebas unitarias (`test_server.py`).
 - **Sentry.io Live Cloud Telemetry & Keyring Integration:** Integración directa y desatendida con `sentry.io` mediante `sentry-sdk` 2.x, con resolución automática de `SENTRY_DSN` desde variables de entorno o el almacén nativo del sistema operativo (Windows Keyring `EnvVarManagerPro`). Emisión de transacciones raíz `summon_{symbol}` y spans `ai.seance` con etiquetado de telemetría forense (`death_sha`, `engine_source`, `grounded_sha`, `cryptic_commit_blocked`, `ast_quine_verified`).
 - **Evidencia Visual de Producción en Sentry:** Incorporación de capturas de pantalla de alta resolución de trazas activas en la nube (`screenshot_sentry_trace_detail.png` y `screenshot_sentry_live_dashboard.png`) para respaldo de la categoría de patrocinio *Best Use of Sentry Agent Tracing*.
 
