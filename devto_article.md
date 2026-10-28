@@ -267,6 +267,7 @@ services:
 
 4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, which directly uncovered our cryptic-commit latency bottleneck during debugging.
 5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
+6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.1—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
 
 ---
 
