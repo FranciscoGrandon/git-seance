@@ -38,7 +38,7 @@ An offline-first developer archaeologist and interactive **Digital Ofrenda** tha
 
 > [!IMPORTANT]
 > 🌐 **Live Web Ofrenda:** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
-> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.3 · 41 Automated Tests · 0 AST Violations)
+> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.4 · 41 Automated Tests · 0 AST Violations)
 
 ---
 
@@ -279,8 +279,8 @@ services:
 ```
 
 4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, which directly uncovered our cryptic-commit latency bottleneck during debugging.
-5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) hardened with `persist-credentials: false` and reactive in-place PR comment updates (detecting `<!-- git-seance-ofrenda -->` to prevent comment duplicates on synchronized pushes) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
-6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.3—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
+5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
+6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.4—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
 
 ---
 
