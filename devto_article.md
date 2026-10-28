@@ -184,7 +184,7 @@ It automatically posts an elegant Digital Ofrenda memorial comment to the PR dis
 
 | Departed Symbol | File Path | Tombstone SHA | Author & Date | Guardrail Status |
 | :--- | :--- | :--- | :--- | :--- |
-| `legacy_payment_retry_loop()` | `src/billing/checkout.py` | `#8f3a91c` | Devon Vance (2026-10-14) | ✅ Grounded Epitaph |
+| `legacy_payment_retry_loop()` | `src/billing/checkout.py` | `#8f3a91c` | Devon Vance (2026-10-14) | 📜 Documented Git Commit |
 | `sync_legacy_cart_v1()` | `src/checkout/cart_sync.py` | `#d4e91b2` | Marco Ruiz (2026-10-21) | 🛡️ Cryptic Commit (`vague_commit` blocked) |
 
 ---
