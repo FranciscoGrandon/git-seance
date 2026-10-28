@@ -2,7 +2,7 @@
 title: "GitSéance: An Offline Digital Ofrenda Where Local Gemma Summons Deleted Code (And Refuses to Guess Why It Died)"
 published: true
 tags: devchallenge, hf26challenge, gemma, opensource
-canonical_url: https://gitseance.tech
+canonical_url: https://git-seance-q032.onrender.com
 ---
 
 ```
@@ -37,7 +37,7 @@ For **Hacktoberfest 2026: Week 4 ("Ghost in the Machine")**, bridging Halloween 
 An offline-first developer archaeologist and interactive **Digital Ofrenda** that scans your repository's graveyard, builds a marigold-adorned altar for departed code, and lets you conduct grounded séances with excised functions powered by **Google Gemma (`gemma2:2b`)** running 100% locally on your own machine.
 
 > [!IMPORTANT]
-> 🌐 **Live Web Ofrenda (.tech Domain):** [https://gitseance.tech](https://gitseance.tech) (Render Mirror: [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com))  
+> 🌐 **Live Web Ofrenda:** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
 > 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.0 · 41 Automated Tests · 0 AST Violations)
 
 ---
@@ -266,8 +266,7 @@ services:
 ```
 
 4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, which directly uncovered our cryptic-commit latency bottleneck during debugging.
-5. **Best Use of a .tech Domain ($100):** Deployed live on **[https://gitseance.tech](https://gitseance.tech)** (Render Mirror: `https://git-seance-q032.onrender.com`) with managed TLS/SSL.
-6. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
+5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
 
 ---
 
@@ -310,7 +309,7 @@ python git_seance.py
 python git_seance.py --mictlan
 ```
 
-Prefer a visual experience? Visit the live altar at **[https://gitseance.tech](https://gitseance.tech)** (Render Mirror: [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)), light a candle for legacy code, and type `mictlan` on your keyboard!
+Prefer a visual experience? Visit the live altar at **[https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)**, light a candle for legacy code, and type `mictlan` on your keyboard!
 
 ---
 
