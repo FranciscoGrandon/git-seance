@@ -1,14 +1,16 @@
+# Creado por Francisco Grandón Vergara
+# Render Blueprint Specification (v1.0.4)
+# Full-Stack Python Web Service with Zero-Downtime Health Checks & Sentry Cloud Telemetry
+
 services:
   - type: web
     name: git-seance
-    runtime: static
-    buildCommand: ""
-    staticPublishPath: .
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
+    runtime: python
+    buildCommand: "pip install sentry-sdk"
+    startCommand: "python server.py"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SENTRY_DSN
+        sync: false
