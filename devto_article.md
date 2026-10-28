@@ -38,7 +38,7 @@ An offline-first developer archaeologist and interactive **Digital Ofrenda** tha
 
 > [!IMPORTANT]
 > 🌐 **Live Web Ofrenda:** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
-> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.0 · 41 Automated Tests · 0 AST Violations)
+> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.3 · 41 Automated Tests · 0 AST Violations)
 
 ---
 
@@ -120,6 +120,18 @@ To test why deterministic grounding is mandatory for small open-weight models, I
 | :--- | :--- | :--- | :--- | :--- |
 | **Raw `gemma2:2b` (`temp=0.8`)** | 87.5% (7 / 8 invented fake reasons) | 64.0% (16 / 25 cited SHA) | 640 ms | $0.00 |
 | **GitSéance Grounded Pipeline (`temp=0.25` + Guardrail)** | **0.0% (8 / 8 intercepted pre-flight)** | **100.0% (25 / 25 verified by regex)** | **488 ms** (0.02 ms on pre-flight blocks) | **$0.00** |
+
+#### Syntactic Grounding vs. Semantic Hallucination: Why Pre-flight Interception Matters
+
+A rigorous technical question naturally arises: *does checking that a model cites the correct SHA and file path prove that its explanation is factually true?*
+
+**The short answer is no.** Regex auditing for commit `#8f3a91c` and file `src/billing/retry.py` validates **referential and syntactic grounding**—it ensures the model did not invent fictional file paths or non-existent commit hashes. However, a creative model could still cite the true commit while fabricating a fictitious business motive (*"deleted because our VP of Engineering hated while-loops"*).
+
+This is why GitSéance implements **defense-in-depth in two distinct layers**:
+1. **Layer 1 — Pre-Flight Deterministic Circuit Breaker (`is_cryptic_commit`):** If the developer left a vague commit message like `"cleanup"` or `"wip"`, GitSéance intercepts the request *before* invoking Gemma. Because no historical evidence exists in Git, the system deterministically refuses to guess, dropping hallucination rates on cryptic commits from **87.5% down to 0.0%** while cutting latency from 610ms to 0.02ms and consuming 0 tokens.
+2. **Layer 2 — Post-Generation Referential Verification (`verify_response_grounding`):** When the commit message is informative, Gemma is summoned with strict context boundaries, and the post-generation checker ensures that the spirit cites the verified SHA, file path, and symbol name.
+
+*Looking toward production:* While full semantic natural language inference (NLI / cross-encoder verification against multi-hunk diffs) is the logical evolution for enterprise tooling, GitSéance proves that pairing a fast, deterministic pre-flight interceptor with a lightweight local 2B model achieves zero-cost, privacy-first archaeological precision without burning cloud GPU budgets.
 
 ---
 
@@ -245,7 +257,8 @@ This project genuinely integrates and enters the following partner categories:
 
 1. **Overall Winner ($250 + DEV++):** Bridges Halloween and Día de los Muertos to solve real-world software archaeology (`git log --diff-filter=D`) with local open-weight AI, a deterministic anti-hallucination guardrail, a self-inspecting AST Quine (`#000dead`), and a 41-test automated verification suite.
 2. **Best Use of Gemma ($200):** Uses Google's open-weight `gemma2:2b` model locally via Ollama (`http://localhost:11434/api/generate`) at `temperature=0.25` to channel deleted functions in first person while keeping proprietary git history 100% offline.
-3. **Best Use of Render ($200):** Hosts the zero-dependency interactive Digital Ofrenda Web App via a declarative Render Blueprint (`render.yaml`), allowing anyone to summon departed spirits, trigger the `#000dead` source quine, and inspect telemetry in the browser.
+3. **Best Use of Render ($200):** Hosts the zero-dependency interactive Digital Ofrenda Web App via a declarative Render Blueprint (`render.yaml`).
+   - **Architectural Transparency:** Render serves the static single-page altar with zero cold starts, zero latency, and $0 infrastructure overhead. In compliance with strict offline privacy, the web app connects directly to the user's local Ollama endpoint (`http://localhost:11434`) for private client-side inference, or offers an instant deterministic engine for reviewers who want to experience the ofrenda without local model installation. Zero code or proprietary repository data is transmitted to remote servers.
 
 ```yaml
 # render.yaml (Declarative Infrastructure as Code)
@@ -266,8 +279,8 @@ services:
 ```
 
 4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, which directly uncovered our cryptic-commit latency bottleneck during debugging.
-5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
-6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.1—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
+5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) hardened with `persist-credentials: false` and reactive in-place PR comment updates (detecting `<!-- git-seance-ofrenda -->` to prevent comment duplicates on synchronized pushes) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
+6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.3—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
 
 ---
 
