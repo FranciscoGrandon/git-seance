@@ -5,6 +5,18 @@ Todas las modificaciones notables a este proyecto están documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
+## [1.0.3] - 2026-10-28
+
+### Corregido
+- **H3 (GitHub Actions CI/CD):** Prevención de comentarios duplicados en Pull Requests mediante detección reactiva de la marca estable `<!-- git-seance-ofrenda -->` y actualización in-place con `github.rest.issues.updateComment` en eventos `synchronize` y `reopened`.
+- **H5 (Consistencia Semántica en CI):** Reemplazo de la etiqueta engañosa `"✅ Grounded Epitaph"` por `"📜 Documented Git Commit"` en `generate_ci_markdown_summary()`, clarificando de forma rigurosa que el modo `--ci-summary` audita y expone evidencia documental de Git verificada y no una respuesta generada por LLM.
+
+### Seguridad
+- **H2 (Hardening CI/CD):** Configuración de `persist-credentials: false` en `actions/checkout@v4` dentro de `.github/workflows/ofrenda_pr.yml`, mitigando la persistencia innecesaria del token en el entorno del runner.
+
+### Cambiado
+- Actualización de `test_git_seance.py` (`test_ci_markdown_summary_generation`) para certificar la presencia de la marca HTML identificadora y la etiqueta de commit documentado con 26/26 pruebas unitarias exitosas y 0 violaciones AST (`ag_ops.py ast-lint`).
+
 ## [1.0.2] - 2026-10-28
 
 ### Añadido
