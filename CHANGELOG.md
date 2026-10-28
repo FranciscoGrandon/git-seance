@@ -15,8 +15,10 @@ y este proyecto se adhiere a las directivas del concurso Hacktoberfest 2026 Week
 - Enlace oficial a `https://git-seance-q032.onrender.com` con alta disponibilidad y despliegue global en Render Static Site.
 
 ### Cambiado
-- Nombres canónicos de categorías de premios oficiales para Hacktoberfest Week 4 (`Overall Winner`, `Best Use of Gemma`, `Best Use of Render`, `Best Use of Sentry Agent Tracing`, `Best Use of GitHub Copilot`).
+- Nombres canónicos de categorías de premios oficiales para Hacktoberfest Week 4 (`Overall Winner`, `Best Use of Gemma`, `Best Use of Render`, `Best Use of Sentry Agent Tracing`, `Best Use of GitHub Copilot`, `Best Use of Entire`).
 - Enlaces web en documentación y artículo DEV.to consolidados en la URL de producción oficial en Render (`https://git-seance-q032.onrender.com`).
+- Actualización de la pestaña `🏆 Submission & Deploy Kit` en `index.html` y en `gits_ance_digital_ofrenda_haunted_code_archaeologist_gemma_local.html` sustituyendo la referencia a `.tech` por la certificación oficial de **41/41 Unit Tests & AST Guardrail**, logrando coherencia total con producción.
+- Incorporación de la 6ª categoría oficial **Best Use of Entire ($100 USD)** respaldada por la trazabilidad pública de sesiones de agente, diagnósticos de latencia y registros SHA-256 (bolsa total de $950 USD).
 
 ## [1.0.0] - 2026-10-28
 
