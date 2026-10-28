@@ -8,6 +8,7 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 ## [1.1.0] - 2026-10-28
 
 ### Añadido
+- **Galería Visual de Producción Actualizada (Retina 4K):** Renovación completa de las capturas de pantalla oficiales en `assets/screenshots/` capturando en alta fidelidad el Altar 3D Three.js r128 en WebGL, los 4 terminales CRT holográficos procedurales, cables neón glowing, cirios en escala 1:10, telemetría Sentry y una nueva toma cinematográfica de primer plano (`screenshot_4_3d_altar_cinematic.png`).
 - **👑 Combinado Cinemático (Animación de Cámara Orgánica y Solemne):** Eliminación total de la rotación forzada de 360° en la ofrenda 3D por una experiencia respetuosa y contemplativa. Implementación del motor cinemático multicapa:
   1. *Respiración Frontal Lissajous*: Oscilación armónica sutil ($\pm 6^\circ$ en azimut, $\pm 0.15$ en altura) a frecuencia ultra-baja (0.0006 rad/ms), manteniendo siempre el altar enfocado frontalmente con porte ceremonial.
   2. *Paralaje Giroscópico Reactivo al Cursor*: Desplazamiento reactivo amortiguado ($X \in [-0.7, 0.7]$, $Y \in [-0.4, 0.4]$, factor lerp 0.04) que sigue suavemente el movimiento del ratón en la ventana.

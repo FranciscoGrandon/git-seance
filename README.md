@@ -74,7 +74,10 @@ To give developers, judges, and open-source contributors full transparency into 
 
 ### 1. Interactive Digital Ofrenda & Awakened Quine Relic (`#000dead`)
 ![GitSéance Live Digital Ofrenda and Awakened Quine Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
-*Figure 1: The interactive altar with cempasúchil marigold rain, candle-lit departed functions, and the unlocked `#000dead` Mictlán source quine verifying real-time FNV-1a DOM parity.*
+*Figure 1: The interactive altar with real-time 3D Three.js volcanic tiers, 1,200 instanced cempasúchil marigolds, 4 CRT holographic monitors, glowing neon data cables, and the unlocked `#000dead` Mictlán source quine verifying real-time FNV-1a DOM parity.*
+
+![GitSéance Real-Time 3D Altar Cinematic Close-Up](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_4_3d_altar_cinematic.png)
+*Figure 1b: Dedicated close-up of the Three.js r128 procedural altar: 4 CRT holographic terminals (amber, matrix green, cyan, magenta) with scanlines and blinking cursors, pulsating neon cables, and 1:10 cirios scale.*
 
 ### 2. Sentry Agent Tracing Telemetry & Anti-Hallucination Guardrail
 ![GitSéance Sentry Agent Tracing Telemetry Dashboard](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_2_sentry_tracing.png)
