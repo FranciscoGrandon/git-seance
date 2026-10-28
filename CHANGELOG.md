@@ -12,11 +12,11 @@ y este proyecto se adhiere a las directivas del concurso Hacktoberfest 2026 Week
 - Benchmark empírico de alucinaciones sobre 25 funciones eliminadas históricas contrastando Gemma 2B sin guardarraíl vs. pipeline determinista de GitSéance.
 - Trazas JSON y documentación de diagnóstico de latencia en Sentry Agent Tracing demostrando la reducción de latencia de 610ms a 0.02ms en commits crípticos gracias al interceptor pre-flight.
 - Archivo de infraestructura declarativa `render.yaml` (Render Blueprint) para despliegue estático automatizado con reescrituras a `index.html` y cabeceras `Cache-Control`.
-- Enlace espejo oficial a `https://git-seance.onrender.com` con alta disponibilidad como respaldo del dominio de producción (`https://gitseance.tech`).
+- Enlace oficial a `https://git-seance-q032.onrender.com` con alta disponibilidad y despliegue global en Render Static Site.
 
 ### Cambiado
-- Nombres canónicos de categorías de premios oficiales para Hacktoberfest Week 4 (`Overall Winner`, `Best Use of Gemma`, `Best Use of Render`, `Best Use of Sentry Agent Tracing`, `Best Use of a .tech Domain`, `Best Use of GitHub Copilot`).
-- Enlaces web en documentación y artículo DEV.to para incluir redundancia ante propagación de DNS (`https://gitseance.tech` y `https://git-seance.onrender.com`).
+- Nombres canónicos de categorías de premios oficiales para Hacktoberfest Week 4 (`Overall Winner`, `Best Use of Gemma`, `Best Use of Render`, `Best Use of Sentry Agent Tracing`, `Best Use of GitHub Copilot`).
+- Enlaces web en documentación y artículo DEV.to consolidados en la URL de producción oficial en Render (`https://git-seance-q032.onrender.com`).
 
 ## [1.0.0] - 2026-10-28
 
