@@ -32,7 +32,7 @@
 > [!IMPORTANT]
 > 🌐 **Live Web Ofrenda (Render):** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
 > 📰 **Official DEV.to Submission:** [GitSéance: An Offline Digital Ofrenda Where Local Gemma Summons Deleted Code](https://dev.to/fgrandon/gitseance-an-offline-digital-ofrenda-where-local-gemma-summons-deleted-code-and-refuses-to-guess-4hc0)  
-> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.3 · 41 Automated Tests · 0 AST Violations)
+> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.4 · 41 Automated Tests · 0 AST Violations)
 
 ---
 
@@ -213,8 +213,8 @@ GitSéance qualifies for 6 official sponsor categories in Week 4 (total potentia
 | **🤖 Best Use of Gemma** | **$200** | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
 | **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed live to Render via declarative Blueprint (`render.yaml`) at `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. Architectural transparency: static single-page altar with $0 cloud cost + client-side local Gemma inference. |
 | **📊 Best Use of Sentry Agent Tracing** | **$100** | End-to-end telemetry instrumentation with custom `ai.seance` spans, token consumption tracking, p95 latency distributions, and exportable JSON traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
-| **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` hardened with `persist-credentials: false` and reactive in-place PR comment updates (detecting `<!-- git-seance-ofrenda -->` to avoid duplicates). |
-| **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.3—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
+| **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion). |
+| **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.4—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
 
 ---
 
