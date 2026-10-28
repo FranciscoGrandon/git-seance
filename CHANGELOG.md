@@ -5,9 +5,25 @@ Todas las modificaciones notables a este proyecto serán documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a las directivas del concurso Hacktoberfest 2026 Week 4 ("Ghost in the Machine").
 
-## [Unreleased] - 2026-10-28
+## [1.0.1] - 2026-10-28
 
 ### Añadido
+- Capturas de pantalla de alta fidelidad para el showcase de DEV.to y README en `assets/screenshots/` (`screenshot_1_ofrenda_quine.png`, `screenshot_2_sentry_tracing.png`, `screenshot_3_terminal_cli.png`).
+- Benchmark empírico de alucinaciones sobre 25 funciones eliminadas históricas contrastando Gemma 2B sin guardarraíl vs. pipeline determinista de GitSéance.
+- Trazas JSON y documentación de diagnóstico de latencia en Sentry Agent Tracing demostrando la reducción de latencia de 610ms a 0.02ms en commits crípticos gracias al interceptor pre-flight.
+- Archivo de infraestructura declarativa `render.yaml` (Render Blueprint) para despliegue estático automatizado con reescrituras a `index.html` y cabeceras `Cache-Control`.
+- Enlace espejo oficial a `https://git-seance.onrender.com` con alta disponibilidad como respaldo del dominio de producción (`https://gitseance.tech`).
+
+### Cambiado
+- Nombres canónicos de categorías de premios oficiales para Hacktoberfest Week 4 (`Overall Winner`, `Best Use of Gemma`, `Best Use of Render`, `Best Use of Sentry Agent Tracing`, `Best Use of a .tech Domain`, `Best Use of GitHub Copilot`).
+- Enlaces web en documentación y artículo DEV.to para incluir redundancia ante propagación de DNS (`https://gitseance.tech` y `https://git-seance.onrender.com`).
+
+## [1.0.0] - 2026-10-28
+
+### Añadido
+- Publicación oficial y autónoma del artículo de postulación en DEV.to para el desafío Hacktoberfest 2026 Week 4 ("Ghost in the Machine"), verificado con identificador de artículo `4933861` y las 4 etiquetas obligatorias del concurso (`#devchallenge`, `#hf26challenge`, `#gemma`, `#opensource`).
+- Publicación remota completa del código fuente y release oficial `v1.0.0` en el repositorio público de GitHub `FranciscoGrandon/git-seance` mediante API REST con autenticación segura en Windows Credential Locker.
+- Protocolo permanente de Autonomía de Punta a Cabo (`end_to_end_autonomy.md`) y subagente guardián `autonomy_sentinel` con verificación determinista mediante `audit_autonomy.py` para vetar de forma estricta el handoff pasivo en cualquier tarea desatendida.
 - Archivo raíz `index.html` como copia canónica optimizada de la ofrenda digital SPA para despliegue inmediato en Render Static Sites con paridad exacta SHA-256.
 - Documentación maestra integral en inglés `README.md` cubriendo la temática dual (Halloween / Día de los Muertos), arquitectura de costo cero ($0.00) con Google Gemma local, guardarraíl determinista para commits crípticos, Quine AST auto-inspeccionado (#000dead), telemetría Sentry Agent Tracing, guía de despliegue en Render con dominio `.tech` y postulación a las 6 categorías del desafío.
 - Archivo `LICENSE` con términos de la licencia MIT y autoría oficial.
