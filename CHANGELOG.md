@@ -11,9 +11,13 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 - Verificación e inferencia 100% real en entorno local conectando el motor Python y el servidor HTTP local a **Ollama** con el modelo oficial **Google Gemma 2B** (`gemma2:2b`).
 - Parámetro de limitación de generación `num_predict: 128` y timeout extendido a 30s en peticiones HTTP hacia `http://127.0.0.1:11434/api/generate` para garantizar respuestas fluidas y sin saturación de CPU.
 - Batería automatizada de pruebas de integración completa sobre `http://localhost:8080/` con **Antigravity Browser Bridge**, certificando 19/19 controles interactivos superados (100% de cobertura).
+- Transacciones raíz en Sentry (`start_transaction`) y vaciado síncrono (`sentry_sdk.flush()`) para garantizar la emisión fiable de eventos de telemetría bajo `sentry-sdk 2.x`.
 
 ### Cambiado
 - Ajuste del pipeline de invocación espírita para tolerar tiempos de inferencia en frío en CPUs sin aceleración gráfica dedicada, activando con máxima precisión la auditoría de anclaje (`grounding_audit_fallback` / `ollama:gemma2:2b`).
+- Desactivación forzada de tumbas sintéticas en modo CI (`--ci-summary`) para evitar reportar falsos positivos en Pull Requests sin código eliminado.
+- Deduplicación de símbolos por tupla `(file_path, symbol_name)`, permitiendo registrar funciones homónimas en distintos módulos.
+- Refinamiento de la heurística de commits crípticos para admitir mensajes concisos descriptivos (`"Drop v1 API"`, `"Remove foo"`) y bloquear patrones de relleno (`merge`, `review comments`, `address feedback`).
 - Certificación de cero violaciones AST (`ag_ops.py ast-lint`) y pase del 100% de la suite de pruebas unitarias (26 backend + 15 frontend = 41 tests OK).
 
 ## [1.0.1] - 2026-10-28
