@@ -48,7 +48,7 @@ class TestGitSeanceProductionServer(unittest.TestCase):
         data = json.loads(res.read().decode("utf-8"))
         self.assertEqual(data.get("status"), "healthy")
         self.assertEqual(data.get("service"), "git-seance")
-        self.assertEqual(data.get("version"), "1.0.4")
+        self.assertEqual(data.get("version"), "1.1.0")
         self.assertIn("uptime_seconds", data)
 
     def test_security_headers_present(self):

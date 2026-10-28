@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#100B1B]">
+<!-- Creado por Francisco Grandón Vergara -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Francisco Grandón Vergara" />
+  <title>GitSéance 3D — Altar Procedural & Laboratorio de Animaciones Cinemáticas</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            mictlan: {
+              bg: '#100B1B',
+              violet: '#382347',
+              amber: '#E9AD55',
+              cempasuchil: '#E87822',
+              terminal: '#7DCE91',
+              bone: '#E9D8BA',
+              card: '#161026',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Three.js r128 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    body {
+      background-color: #100B1B;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @keyframes candlePulse {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+    .candle-glow {
+      animation: candlePulse 1.8s infinite ease-in-out;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #100B1B;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #382347;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E9AD55;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+  <!-- HEADER & APP BAR -->
+  <header class="sticky top-0 z-50 border-b border-amber-500/20 bg-[#100B1B]/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 to-purple-900/40 text-xl shadow-lg shadow-amber-500/10">
+          🌼
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-extrabold tracking-tight text-white">GitSéance 3D</span>
+            <span class="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+              Laboratorio de Animación v1.2
+            </span>
+          </div>
+          <p class="text-xs text-slate-400">Alternativas Cinemáticas al Giro 360° · Three.js r128</p>
+        </div>
+      </div>
+
+      <!-- Telemetry Stats Pill -->
+      <div class="hidden items-center gap-3 md:flex">
+        <div class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/80 px-3 py-1.5 text-xs">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-400">FPS:</span>
+          <span id="fpsCounter" class="font-mono-code font-bold text-emerald-300">60</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/80 px-3 py-1.5 text-xs">
+          <span class="candle-glow text-amber-300">🕯️</span>
+          <span class="text-slate-400">Velas:</span>
+          <span id="headerCandleCount" class="font-mono-code font-bold text-amber-300">270</span>
+          <span class="text-slate-500 text-[10px]">(27 Cirios)</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/80 px-3 py-1.5 text-xs">
+          <span class="text-slate-400">Terminales:</span>
+          <span class="font-mono-code font-bold text-cyan-300">4 CRT</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/80 px-3 py-1.5 text-xs">
+          <span class="text-slate-400">Cables Neón:</span>
+          <span class="font-mono-code font-bold text-pink-300">4 Conduits</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="mx-auto flex-1 w-full max-w-7xl px-4 py-6 sm:px-6 space-y-6">
+
+    <!-- Top Banner: Context & Narrative -->
+    <div class="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-[#161026] via-[#211438] to-[#161026] p-5 shadow-2xl">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-0.5 text-xs font-medium text-amber-300">
+            <span>🎭 Evaluación de Alternativas Visuales</span>
+            <span>•</span>
+            <span>Sustitución del Giro 360° por Cinemáticas Dignas</span>
+          </div>
+          <h1 class="mt-2 text-xl sm:text-2xl font-bold text-white tracking-tight">
+            Laboratorio de Animación y Composición Tridimensional
+          </h1>
+          <p class="mt-1 text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
+            El giro 360° oculta el frente sagrado del altar. Aquí puedes evaluar en tiempo real <strong>5 alternativas cinemáticas superiores</strong>: respiración frontal sutil, paralaje reactivo al puntero del ratón, lluvia ascendente de pétalos espirituales y latido ciberespiritual en los cables de neón.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2 shrink-0">
+          <button id="toggleFallbackBtn" type="button" class="inline-flex items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-2.5 text-xs font-semibold text-amber-200 hover:bg-amber-500/20 hover:border-amber-400 transition-all shadow-md">
+            <span>🔄</span>
+            <span id="toggleFallbackLabel">Probar Fallback 2D</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Central Viewport & Controls -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- 3D Canvas Container (Col-span 8) -->
+      <div class="lg:col-span-8 flex flex-col space-y-3">
+        <div id="altarViewport" class="relative w-full h-[520px] rounded-2xl border border-amber-500/30 bg-[#0d0817] overflow-hidden shadow-2xl group">
+          
+          <!-- WebGL 3D Canvas -->
+          <canvas id="altar3DCanvas" class="absolute inset-0 h-full w-full z-10 transition-opacity duration-700 pointer-events-auto cursor-grab active:cursor-grabbing"></canvas>
+
+          <!-- Fallback 2D View -->
+          <div id="fallback2DView" class="absolute inset-0 z-0 opacity-0 pointer-events-none transition-opacity duration-700 flex flex-col items-center justify-center bg-gradient-to-b from-[#180e2b] via-[#0f091b] to-[#08050e] p-6 text-center">
+            <div class="text-6xl mb-4">🕯️💀🌼</div>
+            <h3 class="text-lg font-bold text-amber-300">Altar 2D Ilustrado Activo (Modo de Respaldo)</h3>
+            <p class="text-xs text-slate-300 max-w-md mt-2">
+              Esta vista representa la ilustración original base64. Si el navegador no soporta WebGL, el sistema conmuta aquí instantáneamente.
+            </p>
+          </div>
+
+          <!-- Subtle Vignette Overlay -->
+          <div class="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-[#100B1B] via-transparent to-transparent opacity-80"></div>
+          <div class="pointer-events-none absolute inset-0 z-20 bg-gradient-to-r from-[#100B1B]/40 via-transparent to-[#100B1B]/40"></div>
+
+          <!-- Bottom HUD Overlay inside Viewport -->
+          <div class="absolute bottom-4 left-4 right-4 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+            <div class="flex items-center gap-2 rounded-lg border border-amber-500/30 bg-black/70 px-3 py-1.5 text-xs text-amber-200 backdrop-blur-md">
+              <span class="candle-glow">🕯️</span>
+              <span id="altarStatusText" class="font-mono-code">Modo Activo: Combinado Cinemático</span>
+            </div>
+
+            <div class="flex items-center gap-2 rounded-lg border border-slate-700/50 bg-black/70 px-3 py-1.5 text-[11px] text-slate-300 backdrop-blur-md">
+              <span>🖱️ Arrastra con el ratón para orbitar · Rueda para zoom</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera Preset Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-[#161026] p-3 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Vistas Rápidas:</span>
+            <button id="btnCamFront" class="rounded border border-slate-700 bg-slate-800 px-2.5 py-1 text-slate-200 hover:border-amber-400 hover:text-white transition">Frontal Altar</button>
+            <button id="btnCamPerspective" class="rounded border border-amber-500/50 bg-amber-500/20 px-2.5 py-1 text-amber-300 font-semibold transition">Perspectiva</button>
+            <button id="btnCamTop" class="rounded border border-slate-700 bg-slate-800 px-2.5 py-1 text-slate-200 hover:border-amber-400 hover:text-white transition">Cenital</button>
+            <button id="btnCamReset" class="rounded border border-slate-700 bg-slate-800 px-2.5 py-1 text-slate-400 hover:text-white transition">Reset</button>
+          </div>
+          <div class="text-[11px] text-amber-300/80 font-mono-code">
+            4 Pantallas CRT · 4 Cables Neón
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Mode Selector & Controls (Col-span 4) -->
+      <div class="lg:col-span-4 flex flex-col space-y-4">
+        
+        <!-- CARD 1: ANIMATION ALTERNATIVE SELECTOR (NEW) -->
+        <div class="rounded-2xl border border-amber-500/40 bg-[#161026] p-5 shadow-2xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+            <div>
+              <h2 class="text-sm font-bold text-amber-300 flex items-center gap-2">
+                <span>🎬</span>
+                <span>Alternativas de Animación</span>
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Elige para previsualizar en vivo</p>
+            </div>
+            <span class="rounded bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-mono-code text-amber-300">
+              Interactive
+            </span>
+          </div>
+
+          <!-- Radio Selection Buttons for Animation Modes -->
+          <div class="space-y-2 text-xs">
+            
+            <!-- Option 1: Combined Cinematic (Recommended) -->
+            <label class="flex items-start gap-3 rounded-xl border border-amber-500/50 bg-amber-500/10 p-2.5 cursor-pointer hover:border-amber-400 transition">
+              <input type="radio" name="animMode" value="combinado" checked class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-bold text-amber-300 block">👑 Combinado Cinemático (Recomendado)</span>
+                <span class="text-[10px] text-slate-300 block mt-0.5">
+                  Respiración frontal sutil (±6°) + Paralaje reactivo al ratón + Pulso de cables neón + Código flotante sereno (velocidad reducida).
+                </span>
+              </div>
+            </label>
+
+            <!-- Option 2: Breathing Frontal -->
+            <label class="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/80 p-2.5 cursor-pointer hover:border-amber-400/50 transition">
+              <input type="radio" name="animMode" value="respiracion" class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-bold text-slate-200 block">🎥 Respiración Frontal Suave</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">
+                  Oscilación sutil en arco estrecho (±6°). Nunca muestra la espalda del altar; mantiene la vista noble.
+                </span>
+              </div>
+            </label>
+
+            <!-- Option 3: Mouse Parallax -->
+            <label class="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/80 p-2.5 cursor-pointer hover:border-amber-400/50 transition">
+              <input type="radio" name="animMode" value="paralaje" class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-bold text-slate-200 block">🪟 Paralaje Reactivo al Ratón</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">
+                  Inclinación giroscópica según la posición del cursor con inercia suave (efecto holograma 3D interactivo).
+                </span>
+              </div>
+            </label>
+
+            <!-- Option 4: Petals & Embers Drift -->
+            <label class="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/80 p-2.5 cursor-pointer hover:border-amber-400/50 transition">
+              <input type="radio" name="animMode" value="petalos" class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-bold text-slate-200 block">💻 Código & Glifos Holográficos Flotantes</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">
+                  Cámara calma; fragmentos de código, SHA y lambdas flotan serenamente hacia arriba a velocidad reducida.
+                </span>
+              </div>
+            </label>
+
+            <!-- Option 5: Cyber Pulse -->
+            <label class="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/80 p-2.5 cursor-pointer hover:border-amber-400/50 transition">
+              <input type="radio" name="animMode" value="pulso" class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-bold text-slate-200 block">⚡ Latido Ciberespiritual Neón</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">
+                  Cámara frontal con ondas periódicas de datos viajando por los cables hacia las flores.
+                </span>
+              </div>
+            </label>
+
+            <!-- Option 6: 360 Turntable (Old - for comparison) -->
+            <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-slate-900/40 p-2.5 cursor-pointer hover:border-slate-600 transition">
+              <input type="radio" name="animMode" value="giro360" class="mt-0.5 accent-amber-500" />
+              <div>
+                <span class="font-semibold text-slate-400 block">🔄 Giro 360° Antiguo (Comparativa)</span>
+                <span class="text-[10px] text-slate-500 block mt-0.5">
+                  La rotación continua previa para constatar por qué distraía de la visual frontal.
+                </span>
+              </div>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- CARD 2: Symbolic 1:10 Candle Scale Manager -->
+        <div class="rounded-2xl border border-slate-800 bg-[#161026] p-5 shadow-xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+            <div>
+              <h2 class="text-sm font-bold text-amber-300 flex items-center gap-2">
+                <span class="candle-glow">🕯️</span>
+                <span>Escala Simbólica 1:10 (hasta 270)</span>
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">1 cirio 3D = 10 velas en el repo</p>
+            </div>
+            <span id="candleCountBadge" class="rounded bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-xs font-mono-code font-bold text-amber-300">
+              270 Velas · 27/27 Cirios
+            </span>
+          </div>
+
+          <!-- Slider 1 to 270 -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs text-slate-400">
+              <span>10 Velas</span>
+              <span id="candleSliderValue" class="text-amber-200 font-bold font-mono-code">270 Velas (27 Cirios)</span>
+              <span>270 Velas</span>
+            </div>
+            <input id="candleSlider" type="range" min="10" max="270" value="270" step="10"
+                   class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500" />
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 text-[11px]">
+            <button id="btnPreset30" class="px-2 py-1 rounded border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition">30 Velas (3 Cirios)</button>
+            <button id="btnPreset140" class="px-2 py-1 rounded border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition">140 Velas (14 Cirios)</button>
+            <button id="btnPreset270" class="px-2 py-1 rounded border border-amber-500/50 bg-amber-500/20 text-amber-300 font-semibold transition">270 Velas (27 Cirios)</button>
+          </div>
+        </div>
+
+        <!-- CARD 3: Narrative Events Simulator -->
+        <div class="rounded-2xl border border-slate-800 bg-[#161026] p-4 shadow-xl space-y-2.5">
+          <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <span>⚡</span>
+            <span>Simulador de Eventos</span>
+          </h3>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button id="btnEventSelectGhost" type="button" class="text-left rounded-xl border border-slate-800 bg-slate-900/90 hover:border-amber-400/60 p-2 transition">
+              <div class="font-bold text-amber-300 text-[11px]">🎯 Seleccionar</div>
+              <p class="text-[10px] text-slate-400">Enfoque al escalón</p>
+            </button>
+            <button id="btnEventSummon" type="button" class="text-left rounded-xl border border-amber-500/30 bg-amber-500/10 hover:border-amber-400 p-2 transition">
+              <div class="font-bold text-amber-200 text-[11px]">🕯️ Invocación</div>
+              <p class="text-[10px] text-amber-400/80">Flicker y niebla</p>
+            </button>
+            <button id="btnEventVerified" type="button" class="text-left rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:border-emerald-400 p-2 transition">
+              <div class="font-bold text-emerald-300 text-[11px]">✅ SHA Válido</div>
+              <p class="text-[10px] text-emerald-400/80">Halo dorado & verde</p>
+            </button>
+            <button id="btnEventBlocked" type="button" class="text-left rounded-xl border border-rose-500/30 bg-rose-500/10 hover:border-rose-400 p-2 transition">
+              <div class="font-bold text-rose-300 text-[11px]">🛡️ Bloqueo</div>
+              <p class="text-[10px] text-rose-400/80">Atenuación roja</p>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-amber-500/20 bg-[#100B1B] py-4 text-center text-xs text-slate-500">
+    <p>Creado por <strong class="text-slate-300">Francisco Grandón Vergara</strong> · Hacktoberfest 2026 · GitSéance Digital Ofrenda</p>
+  </footer>
+
+  <!-- PROCEDURAL THREE.JS ENGINE -->
+  <script id="gitSeance3DEngineScript">
+    // Creado por Francisco Grandón Vergara
+    (function () {
+      'use strict';
+
+      const canvas = document.getElementById('altar3DCanvas');
+      const viewport = document.getElementById('altarViewport');
+      const fallbackView = document.getElementById('fallback2DView');
+      const toggleFallbackBtn = document.getElementById('toggleFallbackBtn');
+      const toggleFallbackLabel = document.getElementById('toggleFallbackLabel');
+      const altarStatusText = document.getElementById('altarStatusText');
+      const fpsCounter = document.getElementById('fpsCounter');
+
+      // Candle Scale Elements
+      const candleSlider = document.getElementById('candleSlider');
+      const candleCountBadge = document.getElementById('candleCountBadge');
+      const candleSliderValue = document.getElementById('candleSliderValue');
+      const headerCandleCount = document.getElementById('headerCandleCount');
+      const btnPreset30 = document.getElementById('btnPreset30');
+      const btnPreset140 = document.getElementById('btnPreset140');
+      const btnPreset270 = document.getElementById('btnPreset270');
+
+      let isFallbackMode = false;
+      let rawCandleCount = 270;
+      let activeCirios = 27; // 1 cirio = 10 velas, max 27 cirios = 270 velas
+      let currentAnimMode = 'combinado'; // 'combinado' | 'respiracion' | 'paralaje' | 'petalos' | 'pulso' | 'giro360'
+
+      // Hook animation radio buttons
+      const animRadios = document.querySelectorAll('input[name="animMode"]');
+      animRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          currentAnimMode = e.target.value;
+          const labels = {
+            'combinado': 'Modo Activo: Combinado Cinemático (Respiración + Paralaje + Neón + Código Flotante)',
+            'respiracion': 'Modo Activo: Respiración Frontal Suave (±6°)',
+            'paralaje': 'Modo Activo: Paralaje Reactivo al Ratón',
+            'petalos': 'Modo Activo: Fragmentos de Código Holográfico Flotante (Velocidad Serena)',
+            'pulso': 'Modo Activo: Latido Ciberespiritual Neón',
+            'giro360': 'Modo Activo: Giro 360° Antiguo (Comparativa)'
+          };
+          altarStatusText.textContent = labels[currentAnimMode] || 'Modo Activo';
+          
+          // Reset camera angle to frontal center when switching to frontal modes
+          if (currentAnimMode !== 'giro360') {
+            camAngle.theta = 0;
+            camAngle.phi = 0.35;
+            camAngle.radius = 8.2;
+            targetLookAt.set(0, 1.1, 0);
+          }
+        });
+      });
+
+      function isWebGLAvailable() {
+        try {
+          const testCanvas = document.createElement('canvas');
+          return !!(window.WebGLRenderingContext && (testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl')));
+        } catch (e) {
+          return false;
+        }
+      }
+
+      if (!isWebGLAvailable()) {
+        activateFallback2D();
+        return;
+      }
+
+      function activateFallback2D() {
+        isFallbackMode = true;
+        canvas.style.opacity = '0';
+        canvas.style.pointerEvents = 'none';
+        fallbackView.style.opacity = '1';
+        fallbackView.style.pointerEvents = 'auto';
+        toggleFallbackLabel.textContent = 'Activar 3D WebGL';
+        altarStatusText.textContent = 'Estado: Modo Fallback 2D Activo';
+      }
+
+      function activate3DMode() {
+        isFallbackMode = false;
+        fallbackView.style.opacity = '0';
+        fallbackView.style.pointerEvents = 'none';
+        canvas.style.opacity = '1';
+        canvas.style.pointerEvents = 'auto';
+        toggleFallbackLabel.textContent = 'Probar Fallback 2D';
+        altarStatusText.textContent = `Estado: ${rawCandleCount} Velas (${activeCirios}/27 Cirios [1:10])`;
+      }
+
+      toggleFallbackBtn.addEventListener('click', () => {
+        if (isFallbackMode) activate3DMode();
+        else activateFallback2D();
+      });
+
+      // 1. Scene, Camera, Renderer
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x100B1B);
+      scene.fog = new THREE.FogExp2(0x120b22, 0.052);
+
+      const camera = new THREE.PerspectiveCamera(42, viewport.clientWidth / viewport.clientHeight, 0.1, 100);
+      const targetLookAt = new THREE.Vector3(0, 1.1, 0);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+
+      // 2. Lighting Setup
+      const ambientLight = new THREE.AmbientLight(0x382347, 1.4);
+      scene.add(ambientLight);
+
+      const candleLights = [
+        { light: new THREE.PointLight(0xF59E0B, 3.2, 7.5, 1.8), pos: [0.0, 2.3, -0.6], baseIntensity: 3.2 },
+        { light: new THREE.PointLight(0xEA580C, 2.6, 6.5, 1.8), pos: [-1.6, 1.6, 0.2], baseIntensity: 2.6 },
+        { light: new THREE.PointLight(0xF59E0B, 2.6, 6.5, 1.8), pos: [1.6, 1.6, 0.2], baseIntensity: 2.6 }
+      ];
+      candleLights.forEach(cl => {
+        cl.light.position.set(...cl.pos);
+        cl.light.castShadow = true;
+        cl.light.shadow.bias = -0.002;
+        scene.add(cl.light);
+      });
+
+      const moonDirLight = new THREE.DirectionalLight(0x5b3896, 0.95);
+      moonDirLight.position.set(4, 8, 4);
+      moonDirLight.castShadow = true;
+      scene.add(moonDirLight);
+
+      const cyberRimLight = new THREE.DirectionalLight(0x06b6d4, 0.65);
+      cyberRimLight.position.set(-5, 4, -2);
+      scene.add(cyberRimLight);
+
+      // 3. Altar 3-Tier Step Pyramid Architecture
+      const altarGroup = new THREE.Group();
+      scene.add(altarGroup);
+
+      const stoneMat = new THREE.MeshStandardMaterial({ color: 0x1b1329, roughness: 0.85, metalness: 0.15 });
+      const goldTrimMat = new THREE.MeshStandardMaterial({ color: 0xE9AD55, roughness: 0.35, metalness: 0.75 });
+
+      const tiers = [
+        { width: 5.4, height: 0.55, depth: 3.2, y: 0.275, z: 0 },
+        { width: 4.2, height: 0.55, depth: 2.3, y: 0.825, z: -0.35 },
+        { width: 2.8, height: 0.65, depth: 1.5, y: 1.425, z: -0.7 },
+      ];
+      tiers.forEach((t) => {
+        const tierMesh = new THREE.Mesh(new THREE.BoxGeometry(t.width, t.height, t.depth), stoneMat);
+        tierMesh.position.set(0, t.y, t.z);
+        tierMesh.receiveShadow = true;
+        tierMesh.castShadow = true;
+        altarGroup.add(tierMesh);
+
+        const rimMesh = new THREE.Mesh(new THREE.BoxGeometry(t.width + 0.04, 0.04, t.depth + 0.04), goldTrimMat);
+        rimMesh.position.set(0, t.y + t.height / 2 + 0.02, t.z);
+        altarGroup.add(rimMesh);
+      });
+
+      // 1200 Instanced Cempasúchil Flowers
+      const flowerCount = 1200;
+      const flowerGeo = new THREE.DodecahedronGeometry(0.09, 1);
+      const flowerMat = new THREE.MeshStandardMaterial({ roughness: 0.65, metalness: 0.1 });
+      const instancedFlowers = new THREE.InstancedMesh(flowerGeo, flowerMat, flowerCount);
+      instancedFlowers.castShadow = true;
+      instancedFlowers.receiveShadow = true;
+
+      const dummy = new THREE.Object3D();
+      const flowerColors = [
+        new THREE.Color(0xE87822),
+        new THREE.Color(0xF59E0B),
+        new THREE.Color(0xD97706),
+        new THREE.Color(0xEA580C)
+      ];
+
+      let fIdx = 0;
+      tiers.forEach((t) => {
+        const onTier = Math.floor(flowerCount * 0.28);
+        for (let i = 0; i < onTier && fIdx < flowerCount; i++) {
+          const x = (Math.random() - 0.5) * (t.width - 0.25);
+          const y = t.y + t.height / 2 + 0.04 + Math.random() * 0.03;
+          const z = t.z + (Math.random() - 0.5) * (t.depth - 0.25);
+          dummy.position.set(x, y, z);
+          dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+          const s = 0.7 + Math.random() * 0.6;
+          dummy.scale.set(s, s, s);
+          dummy.updateMatrix();
+          instancedFlowers.setMatrixAt(fIdx, dummy.matrix);
+          instancedFlowers.setColorAt(fIdx, flowerColors[Math.floor(Math.random() * flowerColors.length)]);
+          fIdx++;
+        }
+      });
+      while (fIdx < flowerCount) {
+        const x = (Math.random() - 0.5) * 4.6;
+        const y = 0.05 + Math.random() * 0.1;
+        const z = 1.3 + Math.random() * 1.2;
+        dummy.position.set(x, y, z);
+        dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        const s = 0.6 + Math.random() * 0.5;
+        dummy.scale.set(s, s, s);
+        dummy.updateMatrix();
+        instancedFlowers.setMatrixAt(fIdx, dummy.matrix);
+        instancedFlowers.setColorAt(fIdx, flowerColors[Math.floor(Math.random() * flowerColors.length)]);
+        fIdx++;
+      }
+      instancedFlowers.instanceMatrix.needsUpdate = true;
+      if (instancedFlowers.instanceColor) instancedFlowers.instanceColor.needsUpdate = true;
+      altarGroup.add(instancedFlowers);
+
+      // 4. Exact 27 Physical Candle Slots (Each represents 10 candles)
+      const CANDLE_SLOTS = [
+        { x: 0.0, y: 1.75, z: -0.95, h: 0.55 },
+        { x: -0.65, y: 1.75, z: -0.75, h: 0.48 },
+        { x: 0.65, y: 1.75, z: -0.75, h: 0.48 },
+        { x: -1.05, y: 1.75, z: -0.70, h: 0.40 },
+        { x: 1.05, y: 1.75, z: -0.70, h: 0.40 },
+        { x: -0.35, y: 1.75, z: -0.45, h: 0.38 },
+        { x: 0.35, y: 1.75, z: -0.45, h: 0.38 },
+        { x: -1.80, y: 1.10, z: -0.60, h: 0.46 },
+        { x: 1.80, y: 1.10, z: -0.60, h: 0.46 },
+        { x: -1.45, y: 1.10, z: -0.45, h: 0.42 },
+        { x: 1.45, y: 1.10, z: -0.45, h: 0.42 },
+        { x: -1.75, y: 1.10, z: 0.10, h: 0.36 },
+        { x: 1.75, y: 1.10, z: 0.10, h: 0.36 },
+        { x: -1.25, y: 1.10, z: 0.25, h: 0.34 },
+        { x: 1.25, y: 1.10, z: 0.25, h: 0.34 },
+        { x: -0.65, y: 1.10, z: 0.30, h: 0.32 },
+        { x: 0.65, y: 1.10, z: 0.30, h: 0.32 },
+        { x: -2.35, y: 0.55, z: 0.85, h: 0.42 },
+        { x: 2.35, y: 0.55, z: 0.85, h: 0.42 },
+        { x: -2.25, y: 0.55, z: -0.30, h: 0.38 },
+        { x: 2.25, y: 0.55, z: -0.30, h: 0.38 },
+        { x: -1.90, y: 0.55, z: 1.05, h: 0.34 },
+        { x: 1.90, y: 0.55, z: 1.05, h: 0.34 },
+        { x: -1.35, y: 0.55, z: 1.20, h: 0.30 },
+        { x: 1.35, y: 0.55, z: 1.20, h: 0.30 },
+        { x: -0.65, y: 0.55, z: 1.30, h: 0.28 },
+        { x: 0.65, y: 0.55, z: 1.30, h: 0.28 }
+      ];
+
+      const candleGroup = new THREE.Group();
+      altarGroup.add(candleGroup);
+
+      const waxMat = new THREE.MeshStandardMaterial({ color: 0xE9D8BA, roughness: 0.5, metalness: 0.05 });
+      const flameMat = new THREE.MeshBasicMaterial({ color: 0xFFFBEB });
+      const allCandles = [];
+
+      CANDLE_SLOTS.forEach((slot, i) => {
+        const root = new THREE.Group();
+        const waxMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, slot.h, 14), waxMat);
+        waxMesh.position.set(0, slot.h / 2, 0);
+        waxMesh.castShadow = true;
+        waxMesh.receiveShadow = true;
+        root.add(waxMesh);
+
+        const flameMesh = new THREE.Mesh(new THREE.ConeGeometry(0.035, 0.1, 10), flameMat);
+        flameMesh.position.set(0, slot.h + 0.07, 0);
+        root.add(flameMesh);
+
+        root.position.set(slot.x, slot.y, slot.z);
+        candleGroup.add(root);
+
+        allCandles.push({
+          index: i,
+          flameMesh: flameMesh,
+          baseY: slot.h + 0.07,
+          active: i < activeCirios,
+          scaleCurrent: i < activeCirios ? 1.0 : 0.0
+        });
+      });
+
+      // Sugar Skulls
+      const skullMat = new THREE.MeshStandardMaterial({ color: 0xFAF5FF, roughness: 0.4, metalness: 0.2 });
+      const eyeMat = new THREE.MeshBasicMaterial({ color: 0x7DCE91 });
+
+      function createSkull(x, y, z, scale, rotY) {
+        const root = new THREE.Group();
+        const cranium = new THREE.Mesh(new THREE.SphereGeometry(0.24, 18, 14), skullMat);
+        cranium.scale.set(1, 1.1, 1);
+        root.add(cranium);
+        const jaw = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.26), skullMat);
+        jaw.position.set(0, -0.16, 0.04);
+        root.add(jaw);
+        const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), eyeMat);
+        eyeL.position.set(-0.08, 0.02, 0.22);
+        root.add(eyeL);
+        const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), eyeMat);
+        eyeR.position.set(0.08, 0.02, 0.22);
+        root.add(eyeR);
+        root.position.set(x, y + 0.24 * scale, z);
+        root.scale.set(scale, scale, scale);
+        root.rotation.y = rotY;
+        altarGroup.add(root);
+        return root;
+      }
+      const summitSkull = createSkull(0, 1.75, -0.6, 1.25, 0);
+      const leftSkull = createSkull(-1.1, 1.1, -0.3, 0.9, 0.35);
+      const rightSkull = createSkull(1.1, 1.1, -0.3, 0.9, -0.35);
+
+      // 5. Holographic CRT Terminal Screens
+      const terminalScreens = [];
+      const chassisMat = new THREE.MeshStandardMaterial({ color: 0x090514, roughness: 0.35, metalness: 0.85 });
+      const visorMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08 });
+
+      function createTerminalTexture(mainColorHex, title, lines) {
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 192;
+        const ctx = c.getContext('2d');
+
+        function renderContent(cursorVisible) {
+          ctx.fillStyle = '#06030c';
+          ctx.fillRect(0, 0, c.width, c.height);
+
+          ctx.fillStyle = mainColorHex;
+          ctx.fillRect(4, 4, c.width - 8, 20);
+          ctx.fillStyle = '#06030c';
+          ctx.font = 'bold 11px monospace';
+          ctx.fillText(title, 8, 18);
+
+          ctx.fillStyle = mainColorHex;
+          ctx.font = '10px monospace';
+          let y = 42;
+          lines.forEach((l, idx) => {
+            const isLast = idx === lines.length - 1;
+            const textToDraw = isLast && cursorVisible ? l + '_' : l;
+            ctx.fillText(textToDraw, 10, y);
+            y += 18;
+          });
+
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+          for (let sy = 0; sy < c.height; sy += 3) {
+            ctx.fillRect(0, sy, c.width, 1);
+          }
+
+          ctx.strokeStyle = mainColorHex;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(2, 2, c.width - 4, c.height - 4);
+        }
+
+        renderContent(true);
+        const texture = new THREE.CanvasTexture(c);
+        texture.minFilter = THREE.LinearFilter;
+
+        return { texture, canvas: c, ctx, renderContent, mainColorHex };
+      }
+
+      function buildTerminal(x, y, z, rotX, rotY, rotZ, w, h, colorHex, title, lines) {
+        const root = new THREE.Group();
+        const d = 0.08;
+        const chassis = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), chassisMat);
+        chassis.castShadow = true;
+        chassis.receiveShadow = true;
+        root.add(chassis);
+
+        const texData = createTerminalTexture(colorHex, title, lines);
+        const screenMat = new THREE.MeshStandardMaterial({
+          map: texData.texture,
+          emissive: new THREE.Color(colorHex),
+          emissiveMap: texData.texture,
+          emissiveIntensity: 0.95,
+          roughness: 0.2,
+          metalness: 0.1,
+          transparent: true,
+          opacity: 0.96
+        });
+
+        const screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.05, h - 0.05), screenMat);
+        screenMesh.position.set(0, 0, d / 2 + 0.002);
+        root.add(screenMesh);
+
+        const visorMesh = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.03, h - 0.03), visorMat);
+        visorMesh.position.set(0, 0, d / 2 + 0.008);
+        root.add(visorMesh);
+
+        root.position.set(x, y, z);
+        root.rotation.set(rotX, rotY, rotZ);
+        altarGroup.add(root);
+
+        terminalScreens.push({ root, texData, screenMat, baseColor: colorHex });
+        return root;
+      }
+
+      buildTerminal(-0.85, 1.95, -0.65, -0.08, 0.28, 0.02, 0.65, 0.50, '#F59E0B', '[ OFRENDA // MEMORIAL ]', [
+        '> GHOST: ast_quine',
+        '> SHA: 7f3a9b1... [OK]',
+        '> CIRIOS: 1:10 SCALE',
+        '> GEMMA 2B VERIFIED'
+      ]);
+
+      buildTerminal(0.85, 1.95, -0.65, -0.08, -0.28, -0.02, 0.65, 0.50, '#10B981', '[ MICTLAN // HEX DUMP ]', [
+        '0x00: 4D 49 43 54',
+        '0x04: 4C C1 4E 00',
+        '0x08: 71 75 69 6E',
+        '> STATUS: GROUNDED'
+      ]);
+
+      buildTerminal(-1.75, 1.35, -0.20, -0.12, 0.42, 0.04, 0.72, 0.55, '#00F0FF', '[ SENTRY AGENT TRACE ]', [
+        '> TX: summon_spirit',
+        '> SPAN: ai.seance.run',
+        '> DURATION: 18.4ms',
+        '> SENTRY V2 CONNECTED'
+      ]);
+
+      buildTerminal(1.75, 1.35, -0.20, -0.12, -0.42, -0.04, 0.72, 0.55, '#D946EF', '[ ARCHAEOLOGY ENGINE ]', [
+        '> REPO: Hacktoberfest',
+        '> CAPACIDAD: 270 VELAS',
+        '> 47 TESTS PASS 100%',
+        '> DEV TO // WEEK 4'
+      ]);
+
+      // 6. Glowing Neon Cyber Cables
+      const neonCableMaterials = [];
+      function createNeonCable(points, colorHex, radius) {
+        const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+        const tubeGeo = new THREE.TubeGeometry(curve, 48, radius || 0.022, 8, false);
+        const cableMat = new THREE.MeshStandardMaterial({
+          color: colorHex,
+          emissive: new THREE.Color(colorHex),
+          emissiveIntensity: 0.92,
+          roughness: 0.25,
+          metalness: 0.4
+        });
+        neonCableMaterials.push({ mat: cableMat, baseIntensity: 0.92, colorHex: colorHex });
+        const tubeMesh = new THREE.Mesh(tubeGeo, cableMat);
+        tubeMesh.castShadow = true;
+        tubeMesh.receiveShadow = true;
+        altarGroup.add(tubeMesh);
+        return tubeMesh;
+      }
+
+      createNeonCable([
+        [-0.15, 1.85, -0.85],
+        [-0.75, 1.80, -0.68],
+        [-1.20, 1.50, -0.50],
+        [-1.65, 1.15, -0.25],
+        [-1.95, 0.85, 0.15],
+        [-1.85, 0.58, 0.70],
+        [-1.50, 0.12, 1.35],
+        [-1.10, 0.04, 1.85]
+      ], 0x00F0FF, 0.024);
+
+      createNeonCable([
+        [0.15, 1.85, -0.85],
+        [0.75, 1.80, -0.68],
+        [1.20, 1.50, -0.50],
+        [1.50, 1.15, -0.20],
+        [1.30, 1.12, 0.20],
+        [1.70, 0.85, 0.50],
+        [1.40, 0.58, 0.95],
+        [1.05, 0.10, 1.55],
+        [0.65, 0.04, 1.90]
+      ], 0xFF7700, 0.024);
+
+      createNeonCable([
+        [1.65, 1.25, -0.22],
+        [0.85, 1.12, -0.15],
+        [0.30, 0.82, 0.35],
+        [-0.15, 0.58, 0.85],
+        [-0.25, 0.30, 1.40],
+        [-0.40, 0.04, 1.95]
+      ], 0xD946EF, 0.020);
+
+      createNeonCable([
+        [-1.60, 1.22, -0.20],
+        [-2.05, 0.90, -0.05],
+        [-2.15, 0.58, 0.55],
+        [-1.95, 0.12, 1.15],
+        [-1.60, 0.04, 1.65]
+      ], 0x10B981, 0.019);
+
+      // 7. Ascending Holographic Code & Cyber Soul Fragments (Ultra-Slow Serene Drift)
+      const codeFragmentsGroup = new THREE.Group();
+      scene.add(codeFragmentsGroup);
+
+      const CODE_GLYPHS = [
+        { text: '{ code }', color: '#10B981' },       // Matrix Emerald
+        { text: '0x7F', color: '#00F0FF' },           // Cyber Cyan
+        { text: 'git commit', color: '#F59E0B' },     // Amber
+        { text: 'λ => soul', color: '#D946EF' },      // Magenta
+        { text: '<ofrenda/>', color: '#FF7700' },     // Neon Orange
+        { text: 'sha256:7f3a', color: '#67E8F9' },    // Ice Cyan
+        { text: 'def quine():', color: '#7DCE91' },   // Mint
+        { text: '010101', color: '#A7F3D0' },         // Binary
+        { text: '// RIP ghost', color: '#FCD34D' },   // Gold Comment
+        { text: 'return 0;', color: '#F472B6' }       // Pink
+      ];
+
+      function createCodeSpriteTexture(glyph) {
+        const c = document.createElement('canvas');
+        c.width = 160;
+        c.height = 48;
+        const ctx = c.getContext('2d');
+
+        // Cyber container border & glow
+        ctx.fillStyle = 'rgba(10, 6, 20, 0.65)';
+        ctx.fillRect(2, 2, c.width - 4, c.height - 4);
+
+        ctx.strokeStyle = glyph.color;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(2, 2, c.width - 4, c.height - 4);
+
+        // Monospace code text with shadow glow
+        ctx.shadowColor = glyph.color;
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = glyph.color;
+        ctx.font = 'bold 15px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(glyph.text, c.width / 2, c.height / 2);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.minFilter = THREE.LinearFilter;
+        return tex;
+      }
+
+      const codeSpriteMaterials = CODE_GLYPHS.map(g => {
+        return new THREE.SpriteMaterial({
+          map: createCodeSpriteTexture(g),
+          transparent: true,
+          opacity: 0.85,
+          blending: THREE.AdditiveBlending
+        });
+      });
+
+      const codeParticleCount = 55;
+      const codeParticles = [];
+
+      for (let i = 0; i < codeParticleCount; i++) {
+        const mat = codeSpriteMaterials[i % codeSpriteMaterials.length];
+        const sprite = new THREE.Sprite(mat);
+
+        const x = (Math.random() - 0.5) * 4.6;
+        const y = 0.2 + Math.random() * 3.4;
+        const z = -0.7 + Math.random() * 2.6;
+        // Ultra-slow, serene ascending velocity (1/4 of previous speed)
+        const speedY = 0.0016 + Math.random() * 0.0022;
+        const driftRadius = 0.04 + Math.random() * 0.08;
+        const phase = Math.random() * Math.PI * 2;
+        const baseScale = 0.32 + Math.random() * 0.12;
+
+        sprite.position.set(x, y, z);
+        sprite.scale.set(baseScale, baseScale * 0.3, 1.0);
+        codeFragmentsGroup.add(sprite);
+
+        codeParticles.push({
+          sprite: sprite,
+          baseX: x,
+          y: y,
+          baseZ: z,
+          speedY: speedY,
+          driftRadius: driftRadius,
+          phase: phase,
+          baseScale: baseScale
+        });
+      }
+
+      // 8. Dynamic Symbolic 1:10 Candle Scale Controller
+      function updateCandleScale(totalCandles) {
+        rawCandleCount = Math.max(0, parseInt(totalCandles, 10) || 0);
+        activeCirios = rawCandleCount === 0 ? 0 : Math.max(1, Math.min(27, Math.ceil(rawCandleCount / 10)));
+
+        allCandles.forEach((c) => {
+          c.active = c.index < activeCirios;
+        });
+
+        const ratio = activeCirios / 27.0;
+        candleLights.forEach(cl => {
+          cl.baseIntensity = 1.0 + ratio * 2.8;
+        });
+
+        candleSlider.value = rawCandleCount;
+        candleCountBadge.textContent = `${rawCandleCount} Velas · ${activeCirios}/27 Cirios`;
+        candleSliderValue.textContent = `${rawCandleCount} Velas (${activeCirios} Cirios GPU)`;
+        headerCandleCount.textContent = rawCandleCount;
+      }
+
+      candleSlider.addEventListener('input', (e) => updateCandleScale(e.target.value));
+      btnPreset30.addEventListener('click', () => updateCandleScale(30));
+      btnPreset140.addEventListener('click', () => updateCandleScale(140));
+      btnPreset270.addEventListener('click', () => updateCandleScale(270));
+
+      // 9. Camera Orbit, Parallax & Mouse Coordinates
+      let isDragging = false;
+      let prevMousePos = { x: 0, y: 0 };
+      let camAngle = { theta: 0, phi: 0.35, radius: 8.2 };
+      
+      // Normalized mouse coordinates (-1 to 1) for Gyroscopic Parallax
+      let mouseNorm = { x: 0, y: 0 };
+      let targetMouseNorm = { x: 0, y: 0 };
+
+      window.addEventListener('mousemove', (e) => {
+        // Track mouse relative to window for gyroscopic parallax
+        targetMouseNorm.x = (e.clientX / window.innerWidth) * 2 - 1;
+        targetMouseNorm.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+        if (isDragging) {
+          const dx = e.clientX - prevMousePos.x;
+          const dy = e.clientY - prevMousePos.y;
+          prevMousePos = { x: e.clientX, y: e.clientY };
+          camAngle.theta -= dx * 0.007;
+          camAngle.phi += dy * 0.005;
+        }
+      });
+
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+      canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        camAngle.radius = Math.max(4.5, Math.min(14.0, camAngle.radius + e.deltaY * 0.005));
+      }, { passive: false });
+
+      function applyCameraAngles(theta, phi, radius) {
+        phi = Math.max(0.1, Math.min(Math.PI / 2.2, phi));
+        camera.position.x = targetLookAt.x + radius * Math.sin(theta) * Math.cos(phi);
+        camera.position.y = targetLookAt.y + radius * Math.sin(phi);
+        camera.position.z = targetLookAt.z + radius * Math.cos(theta) * Math.cos(phi);
+        camera.lookAt(targetLookAt);
+      }
+
+      // Quick View Buttons
+      document.getElementById('btnCamFront').addEventListener('click', () => {
+        camAngle.theta = 0; camAngle.phi = 0.22; camAngle.radius = 7.5;
+      });
+      document.getElementById('btnCamPerspective').addEventListener('click', () => {
+        camAngle.theta = 0.32; camAngle.phi = 0.40; camAngle.radius = 8.5;
+      });
+      document.getElementById('btnCamTop').addEventListener('click', () => {
+        camAngle.theta = 0; camAngle.phi = 1.25; camAngle.radius = 9.0;
+      });
+      document.getElementById('btnCamReset').addEventListener('click', () => {
+        camAngle.theta = 0; camAngle.phi = 0.35; camAngle.radius = 8.2;
+      });
+
+      // Event Bus Simulation
+      document.getElementById('btnEventSelectGhost').addEventListener('click', () => {
+        camAngle.theta = -0.22; camAngle.phi = 0.3; camAngle.radius = 6.5;
+        targetLookAt.set(-1.1, 1.1, -0.3);
+        leftSkull.scale.set(1.15, 1.15, 1.15);
+        setTimeout(() => leftSkull.scale.set(0.9, 0.9, 0.9), 600);
+      });
+      document.getElementById('btnEventSummon').addEventListener('click', () => {
+        candleLights.forEach(cl => cl.baseIntensity = 4.8);
+        scene.fog.color.setHex(0x28123c);
+        neonCableMaterials.forEach(nc => nc.mat.emissiveIntensity = 1.6);
+        setTimeout(() => {
+          updateCandleScale(rawCandleCount);
+          scene.fog.color.setHex(0x120b22);
+          neonCableMaterials.forEach(nc => nc.mat.emissiveIntensity = nc.baseIntensity);
+        }, 2200);
+      });
+      document.getElementById('btnEventVerified').addEventListener('click', () => {
+        eyeMat.color.setHex(0x00FF88);
+        ambientLight.color.setHex(0x184a2f);
+        setTimeout(() => {
+          eyeMat.color.setHex(0x7DCE91);
+          ambientLight.color.setHex(0x382347);
+        }, 1800);
+      });
+      document.getElementById('btnEventBlocked').addEventListener('click', () => {
+        candleLights.forEach(cl => cl.baseIntensity = 0.5);
+        ambientLight.color.setHex(0x4a1820);
+        setTimeout(() => {
+          updateCandleScale(rawCandleCount);
+          ambientLight.color.setHex(0x382347);
+        }, 1600);
+      });
+
+      // 10. Master Animation Loop with Selectable Modes
+      let lastTime = performance.now();
+      let frameCount = 0;
+      let lastFpsUpdate = lastTime;
+      let lastCursorToggle = 0;
+      let cursorState = true;
+
+      function animate(time) {
+        requestAnimationFrame(animate);
+        if (isFallbackMode) return;
+
+        frameCount++;
+        if (time - lastFpsUpdate >= 1000) {
+          fpsCounter.textContent = Math.round((frameCount * 1000) / (time - lastFpsUpdate));
+          frameCount = 0;
+          lastFpsUpdate = time;
+        }
+
+        const elapsed = time * 0.001;
+
+        // Smooth mouse lerp for gyroscopic parallax
+        mouseNorm.x += (targetMouseNorm.x - mouseNorm.x) * 0.05;
+        mouseNorm.y += (targetMouseNorm.y - mouseNorm.y) * 0.05;
+
+        // -------------------------------------------------------------
+        // EVALUATE CAMERA MOTION ACCORDING TO SELECTED MODE
+        // -------------------------------------------------------------
+        let currentTheta = camAngle.theta;
+        let currentPhi = camAngle.phi;
+        let currentRadius = camAngle.radius;
+
+        if (!isDragging) {
+          if (currentAnimMode === 'giro360') {
+            // Old 360 rotation for comparison
+            camAngle.theta += 0.0018;
+            currentTheta = camAngle.theta;
+          } else if (currentAnimMode === 'respiracion') {
+            // Mode 1: Pure frontal gentle breathing (Lissajous curve within ±6°)
+            currentTheta = Math.sin(elapsed * 0.45) * 0.10;
+            currentPhi = camAngle.phi + Math.cos(elapsed * 0.35) * 0.035;
+            currentRadius = camAngle.radius + Math.sin(elapsed * 0.25) * 0.15;
+          } else if (currentAnimMode === 'paralaje') {
+            // Mode 2: Gyroscopic Mouse Parallax (Reacts dynamically to user cursor)
+            currentTheta = mouseNorm.x * 0.28;
+            currentPhi = camAngle.phi + mouseNorm.y * 0.12;
+          } else if (currentAnimMode === 'petalos') {
+            // Mode 3: Calm camera with micro-float
+            currentTheta = Math.sin(elapsed * 0.2) * 0.04;
+            currentPhi = camAngle.phi + Math.cos(elapsed * 0.2) * 0.02;
+          } else if (currentAnimMode === 'pulso') {
+            // Mode 4: Frontal view with focus on data pulse
+            currentTheta = Math.sin(elapsed * 0.3) * 0.06;
+          } else if (currentAnimMode === 'combinado') {
+            // Mode 5 (Recommended): Gentle breathing drift + Mouse Parallax
+            const breathingDriftX = Math.sin(elapsed * 0.4) * 0.08;
+            const breathingDriftY = Math.cos(elapsed * 0.3) * 0.025;
+            const mouseOffsetTheta = mouseNorm.x * 0.18;
+            const mouseOffsetPhi = mouseNorm.y * 0.08;
+
+            currentTheta = breathingDriftX + mouseOffsetTheta;
+            currentPhi = camAngle.phi + breathingDriftY + mouseOffsetPhi;
+            currentRadius = camAngle.radius + Math.sin(elapsed * 0.25) * 0.10;
+          }
+        }
+
+        applyCameraAngles(currentTheta, currentPhi, currentRadius);
+
+        // -------------------------------------------------------------
+        // PARTICLES: ASCENDING HOLOGRAPHIC CODE FRAGMENTS (SERENE SLOW DRIFT)
+        // -------------------------------------------------------------
+        const showParticles = (currentAnimMode === 'petalos' || currentAnimMode === 'combinado');
+        codeFragmentsGroup.visible = showParticles;
+
+        if (showParticles) {
+          for (let i = 0; i < codeParticles.length; i++) {
+            const cp = codeParticles[i];
+            cp.y += cp.speedY;
+            // Wrap gracefully at the summit
+            if (cp.y > 3.8) {
+              cp.y = 0.15;
+              cp.baseX = (Math.random() - 0.5) * 4.6;
+              cp.baseZ = -0.7 + Math.random() * 2.6;
+            }
+            // Gentle floating sway
+            const swayX = Math.sin(elapsed * 0.7 + cp.phase) * cp.driftRadius;
+            const swayZ = Math.cos(elapsed * 0.5 + cp.phase) * (cp.driftRadius * 0.6);
+            cp.sprite.position.set(cp.baseX + swayX, cp.y, cp.baseZ + swayZ);
+
+            // Subtle breathing glow opacity
+            const glowPulse = 0.65 + Math.sin(elapsed * 1.8 + cp.phase) * 0.25;
+            cp.sprite.material.opacity = glowPulse;
+          }
+        }
+
+        // -------------------------------------------------------------
+        // NEON CABLE DATA CONDUIT PULSES
+        // -------------------------------------------------------------
+        const neonPulse = (currentAnimMode === 'pulso' || currentAnimMode === 'combinado')
+          ? (Math.sin(elapsed * 3.2) * 0.25 + (Math.sin(elapsed * 8.0) > 0.8 ? 0.35 : 0.0))
+          : Math.sin(elapsed * 2.0) * 0.08;
+
+        neonCableMaterials.forEach(nc => {
+          nc.mat.emissiveIntensity = Math.max(0.6, nc.baseIntensity + neonPulse);
+        });
+
+        // -------------------------------------------------------------
+        // BLINKING TERMINAL CURSORS & CRT SCANLINES
+        // -------------------------------------------------------------
+        if (elapsed - lastCursorToggle > 0.55) {
+          cursorState = !cursorState;
+          lastCursorToggle = elapsed;
+          terminalScreens.forEach(ts => {
+            ts.texData.renderContent(cursorState);
+            ts.texData.texture.needsUpdate = true;
+          });
+        }
+
+        // -------------------------------------------------------------
+        // CANDLE FLAMES & LIGHTING FLICKER
+        // -------------------------------------------------------------
+        allCandles.forEach((c, i) => {
+          const targetScale = c.active ? 1.0 : 0.0;
+          c.scaleCurrent += (targetScale - c.scaleCurrent) * 0.12;
+          if (c.scaleCurrent < 0.01) {
+            c.flameMesh.visible = false;
+          } else {
+            c.flameMesh.visible = true;
+            const flicker = Math.sin(elapsed * 9.0 + i * 2.1) * 0.16 + Math.cos(elapsed * 18.0 + i) * 0.09;
+            const fScale = Math.max(0.01, c.scaleCurrent + flicker * 0.12);
+            c.flameMesh.scale.set(fScale, fScale * 1.15, fScale);
+            c.flameMesh.position.y = c.baseY + Math.sin(elapsed * 13.0 + i) * 0.012;
+          }
+        });
+
+        candleLights.forEach((cl, i) => {
+          const globalFlicker = Math.sin(elapsed * 7.5 + i * 2.0) * 0.22 + Math.cos(elapsed * 15.0 + i) * 0.12;
+          cl.light.intensity = Math.max(0.5, cl.baseIntensity + globalFlicker);
+        });
+
+        // Subtle skull breathing idle
+        const skullBreath = Math.sin(elapsed * 2.0) * 0.02;
+        summitSkull.position.y = 1.75 + 0.24 * 1.25 + skullBreath;
+
+        renderer.render(scene, camera);
+      }
+
+      // Initialize
+      updateCandleScale(270);
+      requestAnimationFrame(animate);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = viewport.clientWidth / viewport.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+      });
+    })();
+  </script>
+</body>
+</html>

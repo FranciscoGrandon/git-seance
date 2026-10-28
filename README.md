@@ -32,7 +32,7 @@
 > [!IMPORTANT]
 > 🌐 **Live Web Ofrenda (Render):** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
 > 📰 **Official DEV.to Submission:** [GitSéance: An Offline Digital Ofrenda Where Local Gemma Summons Deleted Code](https://dev.to/fgrandon/gitseance-an-offline-digital-ofrenda-where-local-gemma-summons-deleted-code-and-refuses-to-guess-4hc0)  
-> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.4 · 41 Automated Tests · 0 AST Violations)
+> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.1.0 · 47 Automated Tests · 0 AST Violations)
 
 ---
 
@@ -290,7 +290,13 @@ python git_seance.py --ci-summary --no-fallback --range "origin/main..HEAD"
 The repository includes a single-file, production-ready Single Page Application (**SPA**) located at `index.html` (and `gits_ance_digital_ofrenda_haunted_code_archaeologist_gemma_local.html`):
 
 ### Key Features:
-- 🕯️ **Interactive Digital Ofrenda:** Clickable tombstones, marigold petal particle effects, and Web Audio API synthesized resonant altar bell chimes (587 Hz D5 & 880 Hz A5).
+- 🕯️ **Real-Time 3D Procedural Altar (Three.js r128):**
+  - **Volcanic Basalt Tiers & 1,200 Instanced Marigolds:** GPU-accelerated single draw-call `InstancedMesh` with fluttering rotation and violet atmospheric fog.
+  - **4 CRT Holographic Terminals:** Procedural amber (`#F59E0B`), matrix green (`#10B981`), electric cyan (`#00F0FF`), and magenta (`#D946EF`) monitors with animated scanlines and blinking cursors.
+  - **Glowing Neon Cables & Data Conduits:** Procedural 3D glowing tubes with live data pulse modulations cascading across altar steps.
+  - **1:10 Symbolic Candle Scale (up to 270 candles):** 27 GPU-rendered physical cirios dynamically represent up to 270 symbolic ofrendas (`Math.ceil(totalOfrendas / 10)`).
+  - **👑 Combinado Cinemático (Ceremonial Camera):** Subtle Lissajous frontal breathing ($\pm 6^\circ$ drift) + gyroscopic cursor parallax + serene ascending code fragments (55 sprites of ancestral code/glyphs drifting at 1/4 velocity).
+  - **Zero-Flicker 2D Fallback:** Instant seamless toggle to the 2D canvas ofrenda on low-spec hardware or user preference.
 - 🔮 **Conversational Séance Terminal:** Real-time conversational interface with departed code spirits, featuring simulated typing and grounding verification badges.
 - 🛡️ **Cryptic Commit Guardrail Simulator:** Toggle cryptic commits to watch the pre-flight guardrail intercept vague commit messages in real time.
 - 💀 **Mictlán Calavera Easter Egg:** Click the glowing golden skull relic (`#000dead`) to trigger the self-aware AST Quine memorial.
@@ -354,9 +360,9 @@ services:
 
 ---
 
-## 🧪 Automated Test Suite & Verification (41 Tests)
+## 🧪 Automated Test Suite & Verification (47 Tests)
 
-GitSéance is rigorously tested with a zero-regression, 41-test suite that verifies both the Python engine and the JavaScript web application.
+GitSéance is rigorously tested with a zero-regression, 47-test suite that verifies the Python engine, OWASP server endpoints, and the JavaScript web application.
 
 ### Run All Tests:
 ```bash
@@ -381,7 +387,7 @@ python -m unittest discover -v
   - Single-file HTML integrity and embedded asset validation ($>1\text{MB}$).
   - `index.html` exact SHA-256 byte parity with original HTML ofrenda.
   - Mandatory authorship metadata (Rule 12).
-  - Production CDN linkages (Tailwind CSS, Chart.js, Google Fonts).
+  - Production CDN linkages (Tailwind CSS, Chart.js, Google Fonts, Three.js r128).
   - DOM Element Consistency: verified that every `document.getElementById` called in JS exists in HTML markup (0 null-pointer risks).
   - FNV-1a JavaScript/Python parity test across string vectors.
   - GitHub Actions PR workflow template syntax and file integrity validation.
@@ -390,11 +396,18 @@ python -m unittest discover -v
   - Strict HTML entity escaping (`&`, `<`, `>`, `"`, `'`) preventing XSS.
   - Live physical DOM rendering via headless Microsoft Edge (`msedge --headless --dump-dom`) for both standalone and `index.html`.
 
+- **`test_server.py` (6 tests):**
+  - Production HTTP server lifecycle and zero-downtime `/healthz` endpoint.
+  - RESTful archaeology endpoints (`GET /api/ghosts` and `POST /api/seance`).
+  - Strict OWASP security headers (`X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`).
+  - Directory path traversal attack prevention (`/../../windows/win.ini` blocked with 404).
+  - HTTP `HEAD` method support for container health probes.
+
 ### Static AST Linting:
 ```bash
 python D:\Users\francisco.grandon\.gemini\config\scripts\ag_ops.py ast-lint . --json
 ```
-*Result: 0 violations in 17.45ms (<30ms SLA).* Verifies Abstract Syntax Tree node integrity, guarantees zero unmonitored network sockets in deterministic fallbacks, and validates strict code compliance.
+*Result: 0 violations across 26 files in 191ms (<300ms SLA).* Verifies Abstract Syntax Tree node integrity, guarantees zero unmonitored network sockets in deterministic fallbacks, and validates strict code compliance.
 
 ---
 
@@ -415,11 +428,14 @@ Hacktoberfest/
 ├── README.md                   # Comprehensive project documentation
 ├── devto_article.md            # Official DEV.to submission article
 ├── git_seance.py               # Core CLI Archaeologist & Gemma Séance Engine
-├── index.html                  # Standalone SPA for Render deployment
-├── gits_ance_digital_ofrenda...# Original standalone HTML ofrenda
+├── index.html                  # Standalone SPA for Render deployment (Three.js 3D Altar)
+├── gits_ance_digital_ofrenda...# Standalone HTML ofrenda (exact SHA-256 parity)
+├── demo_3d_ofrenda.html        # Interactive 3D Altar laboratory & camera modes
 ├── render.yaml                 # Declarative Render Blueprint (IaC)
-├── test_git_seance.py          # 24 Python core unit & integration tests
-└── test_html_ofrenda.py        # 17 HTML, JS parity & Edge headless tests
+├── server.py                   # Production Python HTTP web service & REST endpoints
+├── test_git_seance.py          # 26 Python core unit & integration tests
+├── test_html_ofrenda.py        # 15 HTML, JS parity & Edge headless tests
+└── test_server.py              # 6 Web server, OWASP & REST API tests
 ```
 
 ---

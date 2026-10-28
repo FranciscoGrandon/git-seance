@@ -23,6 +23,11 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 
+# Register modern 3D and web MIME types
+mimetypes.add_type("model/gltf-binary", ".glb")
+mimetypes.add_type("model/gltf+json", ".gltf")
+mimetypes.add_type("application/javascript", ".js")
+
 # Optional Sentry initialization
 try:
     import sentry_sdk
@@ -40,7 +45,7 @@ try:
         sentry_sdk.init(
             dsn=SENTRY_DSN,
             traces_sample_rate=1.0,
-            release="git-seance@1.0.4",
+            release="git-seance@1.1.0",
             environment=os.getenv("RENDER_SERVICE_NAME", os.getenv("SENTRY_ENVIRONMENT", "production")),
         )
         SENTRY_ACTIVE = True
@@ -66,7 +71,7 @@ SECURITY_HEADERS = {
 }
 
 class GitSeanceHandler(BaseHTTPRequestHandler):
-    server_version = "GitSeanceEngine/1.0.4"
+    server_version = "GitSeanceEngine/1.1.0"
 
     def _send_security_headers(self, content_type: str = "text/html; charset=utf-8"):
         self.send_header("Content-Type", content_type)
@@ -106,7 +111,7 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
             self._respond_json(200, {
                 "status": "healthy",
                 "service": "git-seance",
-                "version": "1.0.4",
+                "version": "1.1.0",
                 "uptime_seconds": uptime,
                 "sentry_telemetry": SENTRY_ACTIVE,
                 "render": {

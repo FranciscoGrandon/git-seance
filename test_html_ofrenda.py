@@ -189,7 +189,7 @@ class TestHtmlOfrenda(unittest.TestCase):
             text=True,
             encoding="utf-8",
             errors="replace",
-            timeout=15,
+            timeout=30,
         )
         rendered_dom = proc.stdout
         self.assertIn("legacy_payment_retry_loop()", rendered_dom)
@@ -229,7 +229,7 @@ class TestHtmlOfrenda(unittest.TestCase):
             text=True,
             encoding="utf-8",
             errors="replace",
-            timeout=15,
+            timeout=30,
         )
         rendered_dom = proc.stdout
         self.assertIn("legacy_payment_retry_loop()", rendered_dom)

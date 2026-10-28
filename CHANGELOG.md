@@ -5,6 +5,28 @@ Todas las modificaciones notables a este proyecto están documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
+## [1.1.0] - 2026-10-28
+
+### Añadido
+- **👑 Combinado Cinemático (Animación de Cámara Orgánica y Solemne):** Eliminación total de la rotación forzada de 360° en la ofrenda 3D por una experiencia respetuosa y contemplativa. Implementación del motor cinemático multicapa:
+  1. *Respiración Frontal Lissajous*: Oscilación armónica sutil ($\pm 6^\circ$ en azimut, $\pm 0.15$ en altura) a frecuencia ultra-baja (0.0006 rad/ms), manteniendo siempre el altar enfocado frontalmente con porte ceremonial.
+  2. *Paralaje Giroscópico Reactivo al Cursor*: Desplazamiento reactivo amortiguado ($X \in [-0.7, 0.7]$, $Y \in [-0.4, 0.4]$, factor lerp 0.04) que sigue suavemente el movimiento del ratón en la ventana.
+  3. *Conductos de Datos con Pulso Neón*: Variación periódica sincronizada del brillo y opacidad de los cables procedurales emulando el flujo continuo de telemetría y memorias digitales.
+- **Partículas de Código Flotante Sereno (Reemplazo de Pétalos):** 55 fragmentos y glifos de código ancestral (`{ code }`, `0x7F`, `git commit`, `λ => soul`, `<ofrenda/>`, `sha256:7f3a`, `def quine():`, `010101`, `// RIP ghost`, `return 0;`) generados proceduralmente en la GPU como sprites monocromáticos en verde matrix y ámbar, ascendiendo a velocidad serena reducida a 1/4 (`speedY` entre 0.0016 y 0.0038) con deriva sinusoidal suave.
+- **Producción Oficial: Altar 3D Cinematográfico en Tiempo Real (Three.js r128):** Integración definitiva de la escena 3D procedural en `index.html` y en `gits_ance_digital_ofrenda_haunted_code_archaeologist_gemma_local.html` con paridad SHA-256 exacta. Incorpora los 3 escalones de basalto volcánico, 1,200 flores de cempasúchil mediante `InstancedMesh` (1 draw-call), calaveras cerámicas con ojos de fósforo verde esmeralda y niebla violeta atmosférica.
+- **Pantallas de Terminales Holográficas Cyberpunk (CRT procedurales):** Implementación de 4 monitores/pantallas holográficas distribuidas en los escalones del altar en los colores exactos de la ilustración 2D original:
+  1. *Terminal Ámbar (`#F59E0B`)*: Diagnóstico de ofrendas y verificación de Gemma 2B.
+  2. *Terminal Verde Matrix (`#10B981`)*: Volcado de memoria hex dump del Quine Mictlán.
+  3. *Terminal Cian Eléctrico (`#00F0FF`)*: Telemetría de transacciones y spans de Sentry Agent Tracing.
+  4. *Terminal Magenta Neón (`#D946EF`)*: Telemetría de arqueología forense y validación de 47 pruebas.
+  Cada pantalla cuenta con chasis cibernético oscuro, scanlines CRT dinámicas, visores antirreflejo y cursores parpadeantes sincronizados con el bucle de animación.
+- **Red de Cables y Conductos Neón Glowing en 3D:** Generación procedural de 4 conductos tubulares de neón (`THREE.TubeGeometry` + `THREE.CatmullRomCurve3`) en cian, ámbar, magenta y esmeralda que serpentean y caen en cascada sobre los escalones de piedra y el lecho de cempasúchil, con emisión luminosa reactiva (respiración y pulsos durante sesiones de invocación).
+- **Escala Simbólica 1:10 en Cirios 3D (Soporte hasta 270 Velas):** Cada uno de los 27 cirios físicos modelados en la GPU representa 10 velas/ofrendas simbólicas, permitiendo escalar dinámicamente el altar desde 1 hasta 270 velas (`Math.ceil(totalOfrendas / 10)`). La métrica se refleja en tiempo real en el badge interactivo (`3D Altar Active (X Velas · Y/27 Cirios [1:10])`).
+- **Sincronización Total con Eventos de Inferencia y Arqueología:** Acoplamiento bidireccional entre la lógica forense de GitSéance y el motor 3D: traslación de cámara hacia el escalón al seleccionar un espíritu (`selectSpirit`), oscilación intensa de velas al invocar a Gemma 2B local (`summonSpiritResponse`), pulso carmesí de protección al bloquear commits crípticos y halo dorado al certificar anclaje determinista de SHA.
+- **Fallback 2D Progresivo a Prueba de Fallos:** Preservación íntegra del asset 2D base64 original en el DOM como capa subyacente. Si el navegador carece de aceleración WebGL o se fuerza el conmutador `[3D/2D]`, la aplicación conmuta instantáneamente sin pestañeos, manteniendo el 100% de la funcionalidad y el pase de `test_file_integrity_and_size` (>1MB).
+- **Soporte de Tipos MIME 3D en Servidor:** Registro explícito en `server.py` de `model/gltf-binary` (.glb) y `model/gltf+json` (.gltf) con cabeceras de seguridad OWASP.
+- **Respaldo Maestro Pre-3D:** Creación y verificación de copia de seguridad previa en `_backups/git_seance_backup_20261028_182847/`.
+
 ## [1.0.4] - 2026-10-28
 
 ### Añadido

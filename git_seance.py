@@ -73,7 +73,7 @@ try:
         sentry_sdk.init(
             dsn=SENTRY_DSN,
             traces_sample_rate=1.0,
-            release="git-seance@1.0.4",
+            release="git-seance@1.1.0",
             environment=os.getenv("SENTRY_ENVIRONMENT", "production"),
         )
         SENTRY_ACTIVE = True
