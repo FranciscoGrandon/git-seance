@@ -220,7 +220,7 @@ GitSéance qualifies for 6 official sponsor categories in Week 4 (total potentia
 | :--- | :---: | :--- |
 | **🥇 Overall Winner** | **$250 + DEV++** | Deep engineering rigor (41 automated tests, 0 AST violations), cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, and production-grade documentation. |
 | **🤖 Best Use of Gemma** | **$200** | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
-| **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed live to Render via declarative Blueprint (`render.yaml`) at `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. Architectural transparency: static single-page altar with $0 cloud cost + client-side local Gemma inference. |
+| **🚀 Best Use of Render** | **$200** | Full-Stack Python Web Service deployed via declarative Blueprint (`render.yaml`) to Render at `https://git-seance-q032.onrender.com`. Features zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers (CSP, frame protection), native Sentry cloud telemetry, and instant cold-start delivery of the interactive digital ofrenda. |
 | **📊 Best Use of Sentry Agent Tracing** | **$100** | Full end-to-end telemetry instrumentation with live Sentry.io SDK integration (`sentry-sdk` 2.x) and custom `ai.seance` OpenTelemetry spans. Captures `death_sha`, token counts, p95 latency distributions, and anti-hallucination verification tags directly in Sentry Traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
 | **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion). |
 | **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.4—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
@@ -323,22 +323,20 @@ GitSéance includes a production-ready Render Blueprint in the repository root:
 services:
   - type: web
     name: git-seance
-    runtime: static
-    buildCommand: ""
-    staticPublishPath: .
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
+    runtime: python
+    buildCommand: "pip install sentry-sdk"
+    startCommand: "python server.py"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SENTRY_DSN
+        sync: false
 ```
 
 1. In the [Render Dashboard](https://dashboard.render.com), click **New +** > **Blueprint**.
 2. Connect your GitHub repository (`FranciscoGrandon/git-seance`).
-3. Render automatically parses `render.yaml` and launches your static site with automatic zero-cache headers and single-page routing.
+3. Render automatically parses `render.yaml`, provisions the Python Web Service, runs zero-downtime health checks against `/healthz`, and serves the interactive altar alongside REST endpoints (`/api/ghosts`, `/api/seance`).
 4. Your site is live immediately at: **`https://git-seance-q032.onrender.com`**.
 
 ### Option B: Manual Static Site Setup
