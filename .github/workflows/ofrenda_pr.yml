@@ -10,14 +10,14 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-permissions:
-  pull-requests: write
-  contents: read
+permissions: {}
 
 jobs:
-  ofrenda_memorial:
-    name: Honor Departed Code Functions
+  audit_and_test:
+    name: Verify Tests & Detect Departed Functions
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout Repository with Full History
@@ -31,7 +31,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Detect Departed Functions & Post Ofrenda Epitaph
+      - name: Run Unit Test Suite
+        run: python3 -m unittest test_git_seance.py -v
+
+      - name: Detect Departed Functions & Generate Memorial
         id: generate_memorial
         run: |
           if [ -n "${{ github.base_ref }}" ] && git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
@@ -40,6 +43,26 @@ jobs:
             python3 git_seance.py --ci-summary --no-fallback > ofrenda_comment.md
           fi
           cat ofrenda_comment.md
+
+      - name: Upload Memorial Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ofrenda-comment
+          path: ofrenda_comment.md
+          retention-days: 1
+
+  publish_memorial:
+    name: Post Ofrenda Memorial to Pull Request
+    runs-on: ubuntu-latest
+    needs: audit_and_test
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Download Memorial Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ofrenda-comment
 
       - name: Post or Update Ofrenda Comment in Pull Request
         uses: actions/github-script@v7
