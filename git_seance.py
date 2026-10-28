@@ -823,9 +823,10 @@ def generate_ci_markdown_summary(ghosts: List[DepartedCodeGhost]) -> str:
     300 lines of unsolicited stack archaeology.
     """
     lines = [
+        "<!-- git-seance-ofrenda -->",
         "## 🌼🕯️ Digital Ofrenda Memorial — Departed Code Report",
         "",
-        "> *Generated automatically by `git_seance.py` (Local Google Gemma + Deterministic SHA Guardrail)*",
+        "> *Generated automatically by `git_seance.py` (Git Archaeology + Deterministic SHA Guardrail)*",
         "",
         "| Departed Symbol | File Path | Tombstone SHA | Author & Date | Guardrail Status |",
         "| :--- | :--- | :--- | :--- | :--- |",
@@ -840,7 +841,7 @@ def generate_ci_markdown_summary(ghosts: List[DepartedCodeGhost]) -> str:
                 else (
                     "🛡️ Cryptic Commit (`vague_commit` blocked)"
                     if g.is_cryptic
-                    else "✅ Grounded Epitaph"
+                    else "📜 Documented Git Commit"
                 )
             )
             # Escape pipes and sanitize newlines so a multi-line commit message
