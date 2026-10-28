@@ -203,7 +203,7 @@ It posts an automated Digital Ofrenda tombstone comment with collapsible `<detai
 
 ## 🏆 Hacktoberfest 2026: 6 Official Prize Categories
 
-GitSéance qualifies for 5 major official sponsor categories in Week 4:
+GitSéance qualifies for 6 official sponsor categories in Week 4 (total potential prize pool: **$950 USD**):
 
 | Prize Category | Award | How GitSéance Meets & Exceeds the Criteria |
 | :--- | :---: | :--- |
@@ -212,6 +212,7 @@ GitSéance qualifies for 5 major official sponsor categories in Week 4:
 | **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed live to Render via declarative Blueprint (`render.yaml`) at `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. |
 | **📊 Best Use of Sentry Agent Tracing** | **$100** | End-to-end telemetry instrumentation with custom `ai.seance` spans, token consumption tracking, p95 latency distributions, and exportable JSON traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
 | **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` analyzing PR diffs using full git history (`fetch-depth: 0`) and posting automated memorial comments. |
+| **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.1—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
 
 ---
 
