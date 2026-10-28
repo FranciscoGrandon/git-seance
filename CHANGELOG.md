@@ -5,6 +5,14 @@ Todas las modificaciones notables a este proyecto están documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
+## [1.0.4] - 2026-10-28
+
+### Seguridad
+- **Desacoplamiento DevSecOps de Mínimo Privilegio en 2 Jobs:** Separación arquitectónica estricta en `.github/workflows/ofrenda_pr.yml` entre el análisis de código (`audit_and_test`, con permisos exclusivos de solo lectura `contents: read`) y la publicación del reporte memorial (`publish_memorial`, con permisos `pull-requests: write`). La ejecución de código no confiable queda completamente aislada de cualquier privilegio de escritura mediante transferencia segura de artefactos con `actions/upload-artifact@v4` y `actions/download-artifact@v4`.
+
+### Añadido
+- **Ejecución Automática de Pruebas Unitarias en CI:** Inclusión del paso `python3 -m unittest test_git_seance.py -v` en el job `audit_and_test` para certificar públicamente las 26 pruebas unitarias de backend en cada pull request antes de emitir el reporte.
+
 ## [1.0.3] - 2026-10-28
 
 ### Corregido
