@@ -58,9 +58,24 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 try:
     import sentry_sdk  # type: ignore
 
+    # Check environment variable first; fallback to Windows Keyring / native storage
     SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
+    if not SENTRY_DSN:
+        try:
+            import keyring  # type: ignore
+            keyring_val = keyring.get_password("EnvVarManagerPro", "SENTRY_DSN")
+            if keyring_val:
+                SENTRY_DSN = keyring_val.strip()
+        except Exception:
+            pass
+
     if SENTRY_DSN:
-        sentry_sdk.init(dsn=SENTRY_DSN, traces_sample_rate=1.0)
+        sentry_sdk.init(
+            dsn=SENTRY_DSN,
+            traces_sample_rate=1.0,
+            release="git-seance@1.0.4",
+            environment=os.getenv("SENTRY_ENVIRONMENT", "production"),
+        )
         SENTRY_ACTIVE = True
     else:
         SENTRY_ACTIVE = False
