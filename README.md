@@ -8,6 +8,7 @@
 [![Zero Cost](https://img.shields.io/badge/Cloud%20Bill-%240.00%20USD%20(100%25%20Local)-10b981?style=for-the-badge)](https://github.com)
 [![Sentry Agent Tracing](https://img.shields.io/badge/Telemetry-Sentry%20Agent%20Tracing-362d59?style=for-the-badge&logo=sentry)](https://sentry.io)
 [![Render Static Site](https://img.shields.io/badge/Deploy-Render%20Live-46E3B7?style=for-the-badge&logo=render)](https://git-seance-q032.onrender.com)
+[![DEV.to Submission](https://img.shields.io/badge/DEV.to-Official%20Article-0a0a0a?style=for-the-badge&logo=devdotto)](https://dev.to/fgrandon/gitseance-an-offline-digital-ofrenda-where-local-gemma-summons-deleted-code-and-refuses-to-guess-4hc0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **Creado por Francisco Grandón Vergara**
@@ -29,8 +30,9 @@
 ```
 
 > [!IMPORTANT]
-> 🌐 **Live Web Ofrenda:** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
-> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.0 · 41 Automated Tests · 0 AST Violations)
+> 🌐 **Live Web Ofrenda (Render):** [https://git-seance-q032.onrender.com](https://git-seance-q032.onrender.com)  
+> 📰 **Official DEV.to Submission:** [GitSéance: An Offline Digital Ofrenda Where Local Gemma Summons Deleted Code](https://dev.to/fgrandon/gitseance-an-offline-digital-ofrenda-where-local-gemma-summons-deleted-code-and-refuses-to-guess-4hc0)  
+> 📦 **Source Repository:** [https://github.com/FranciscoGrandon/git-seance](https://github.com/FranciscoGrandon/git-seance) (Release v1.0.1 · 41 Automated Tests · 0 AST Violations)
 
 ---
 
