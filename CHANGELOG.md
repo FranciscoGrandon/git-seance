@@ -7,6 +7,10 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
 ## [1.0.4] - 2026-10-28
 
+### Añadido
+- **Sentry.io Live Cloud Telemetry & Keyring Integration:** Integración directa y desatendida con `sentry.io` mediante `sentry-sdk` 2.x, con resolución automática de `SENTRY_DSN` desde variables de entorno o el almacén nativo del sistema operativo (Windows Keyring `EnvVarManagerPro`). Emisión de transacciones raíz `summon_{symbol}` y spans `ai.seance` con etiquetado de telemetría forense (`death_sha`, `engine_source`, `grounded_sha`, `cryptic_commit_blocked`, `ast_quine_verified`).
+- **Evidencia Visual de Producción en Sentry:** Incorporación de capturas de pantalla de alta resolución de trazas activas en la nube (`screenshot_sentry_trace_detail.png` y `screenshot_sentry_live_dashboard.png`) para respaldo de la categoría de patrocinio *Best Use of Sentry Agent Tracing*.
+
 ### Corregido
 - **Consistencia en Documentación de la Suite de Pruebas:** Sincronización del desglose de la suite en `devto_article.md` y `README.md` a la distribución exacta auditada en código: 26 pruebas de backend (`test_git_seance.py`) y 15 pruebas de frontend (`test_html_ofrenda.py`), manteniendo el total inalterado de 41 pruebas exitosas (100% pass rate).
 
