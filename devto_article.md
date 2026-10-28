@@ -147,6 +147,9 @@ To give judges and developers full transparency into how GitSéance behaves in p
 ![GitSéance Sentry Agent Tracing Telemetry Dashboard](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_2_sentry_tracing.png)
 *Figure 2: Real-time telemetry dashboard monitoring `ai.seance` spans, Chart.js latency and token distributions, and pre-flight interception of vague commits (`0.02ms` latency, 0 hallucinations).*
 
+![Sentry.io Live Performance Trace Details](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_sentry_trace_detail.png)
+*Figure 2b: Production transaction trace in live Sentry.io dashboard (`summon_legacy_payment_retry_loop` span `ai.seance`) validating real-time telemetry, tag attributes (`death_sha`, `engine_source`, `grounded_sha`), and sub-millisecond execution.*
+
 ### 3. Local Terminal CLI Séance & Mictlán Relic Introspection
 ![GitSéance Terminal CLI Séance and Mictlán Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_3_terminal_cli.png)
 *Figure 3: Running `python git_seance.py --mictlan` in the terminal, decoding the embedded hex cipher, inspecting 38KB of AST nodes, and channeling departed spirits with zero network calls.*
@@ -278,7 +281,7 @@ services:
         value: no-cache
 ```
 
-4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics. Crucially, Sentry was not mere decoration: its live span telemetry served as the empirical diagnostic tool that uncovered a major latency and token leak on cryptic commits (burning ~610ms on `"wip cleanup"`), guiding our architectural pivot to an instant, sub-millisecond (0.02ms) deterministic pre-flight interceptor.
+4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, integrated directly with live Sentry.io cloud instances (`sentry-sdk` 2.x) and native Keyring support. Crucially, Sentry was not mere decoration: its live span telemetry served as the empirical diagnostic tool that uncovered a major latency and token leak on cryptic commits (burning ~610ms on `"wip cleanup"`), guiding our architectural pivot to an instant, sub-millisecond (0.02ms) deterministic pre-flight interceptor. Fully verified with production trace captures in sentry.io.
 5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
 6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.0.4—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
 
