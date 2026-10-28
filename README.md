@@ -80,6 +80,9 @@ To give developers, judges, and open-source contributors full transparency into 
 ![GitSéance Sentry Agent Tracing Telemetry Dashboard](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_2_sentry_tracing.png)
 *Figure 2: Real-time telemetry dashboard monitoring `ai.seance` spans, Chart.js latency and token distributions, and pre-flight interception of vague commits (`0.02ms` latency, 0 hallucinations).*
 
+![Sentry.io Live Performance Trace Details](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_sentry_trace_detail.png)
+*Figure 2b: Production transaction trace in live Sentry.io dashboard (`summon_legacy_payment_retry_loop` span `ai.seance`) validating real-time telemetry, tag attributes (`death_sha`, `engine_source`, `grounded_sha`), and sub-millisecond execution.*
+
 ### 3. Local Terminal CLI Séance & Mictlán Relic Introspection
 ![GitSéance Terminal CLI Séance and Mictlán Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_3_terminal_cli.png)
 *Figure 3: Running `python git_seance.py --mictlan` in the terminal, decoding the embedded hex cipher, inspecting 38KB of AST nodes, and channeling departed spirits with zero network calls.*
@@ -190,9 +193,15 @@ In honor of the Day of the Dead, GitSéance contains an embedded mythological ea
 
 ### 6. Sentry Agent Tracing Telemetry (`ai.seance` Spans)
 Modern AI agent architectures require deep observability. GitSéance instruments every step of the séance pipeline:
-- Operation namespace: `ai.seance`.
-- Tracks: p95 latency (ms), token generation count, engine source (`gemma_local` vs `deterministic_fallback`), grounding status, and cryptic commit blocks.
-- Spans can be exported to JSON via `--export-traces traces.json` or inspected visually on the Web App telemetry dashboard with live Chart.js graphs.
+- **Operation namespace:** `ai.seance`.
+- **Live Sentry.io Integration:** Seamlessly initializes via `sentry-sdk` (v2.x) using `SENTRY_DSN` from the environment or native Windows Keyring (`EnvVarManagerPro`). Emits root transactions (`summon_{symbol}`) and detailed span tags:
+  - `death_sha`: Commit SHA where the code departed.
+  - `engine_source`: Inference engine (`gemma_local` vs `deterministic_fallback`).
+  - `grounded_sha`: Boolean fact-check validating that the LLM cited the exact commit prefix.
+  - `cryptic_commit_blocked`: Flag identifying pre-flight guardrail interception.
+  - `ast_quine_verified`: Cryptographic FNV-1a quine verification tag.
+  - `latency_ms` & `tokens_generated`: Precise performance metrics.
+- **Dual Observation Layer:** Spans can be exported to JSON via `--export-traces traces.json`, viewed on the interactive Web App telemetry dashboard with live Chart.js graphs, or explored directly in **Sentry.io Explore Traces / Performance**.
 
 ### 7. Automated Pull Request Ofrenda (GitHub Actions CI/CD)
 Whenever a developer opens a Pull Request that deletes functions, `.github/workflows/ofrenda_pr.yml` executes:
@@ -212,7 +221,7 @@ GitSéance qualifies for 6 official sponsor categories in Week 4 (total potentia
 | **🥇 Overall Winner** | **$250 + DEV++** | Deep engineering rigor (41 automated tests, 0 AST violations), cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, and production-grade documentation. |
 | **🤖 Best Use of Gemma** | **$200** | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
 | **🚀 Best Use of Render** | **$200** | Ultra-performant single-file SPA (`index.html`) deployed live to Render via declarative Blueprint (`render.yaml`) at `https://git-seance-q032.onrender.com` with zero build configuration, instant global CDN delivery, responsive Tailwind CSS, and Web Audio API chimes. Architectural transparency: static single-page altar with $0 cloud cost + client-side local Gemma inference. |
-| **📊 Best Use of Sentry Agent Tracing** | **$100** | End-to-end telemetry instrumentation with custom `ai.seance` spans, token consumption tracking, p95 latency distributions, and exportable JSON traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
+| **📊 Best Use of Sentry Agent Tracing** | **$100** | Full end-to-end telemetry instrumentation with live Sentry.io SDK integration (`sentry-sdk` 2.x) and custom `ai.seance` OpenTelemetry spans. Captures `death_sha`, token counts, p95 latency distributions, and anti-hallucination verification tags directly in Sentry Traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
 | **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion). |
 | **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.4—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
 
