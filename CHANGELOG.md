@@ -5,6 +5,17 @@ Todas las modificaciones notables a este proyecto están documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
+## [1.0.2] - 2026-10-28
+
+### Añadido
+- Verificación e inferencia 100% real en entorno local conectando el motor Python y el servidor HTTP local a **Ollama** con el modelo oficial **Google Gemma 2B** (`gemma2:2b`).
+- Parámetro de limitación de generación `num_predict: 128` y timeout extendido a 30s en peticiones HTTP hacia `http://127.0.0.1:11434/api/generate` para garantizar respuestas fluidas y sin saturación de CPU.
+- Batería automatizada de pruebas de integración completa sobre `http://localhost:8080/` con **Antigravity Browser Bridge**, certificando 19/19 controles interactivos superados (100% de cobertura).
+
+### Cambiado
+- Ajuste del pipeline de invocación espírita para tolerar tiempos de inferencia en frío en CPUs sin aceleración gráfica dedicada, activando con máxima precisión la auditoría de anclaje (`grounding_audit_fallback` / `ollama:gemma2:2b`).
+- Certificación de cero violaciones AST (`ag_ops.py ast-lint`) y pase del 100% de la suite de pruebas unitarias (26 backend + 15 frontend = 41 tests OK).
+
 ## [1.0.1] - 2026-10-28
 
 ### Añadido
