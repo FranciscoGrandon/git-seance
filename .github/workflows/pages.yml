@@ -1,0 +1,58 @@
+# ===============================================================================
+# 🌼🕯️ GitSéance: Digital Ofrenda Live Deployment to GitHub Pages 🕯️🌼
+# Creado por Francisco Grandón Vergara
+# Hacktoberfest 2026 Open-Source AI Challenge: Week 4 ("Ghost in the Machine")
+# ===============================================================================
+
+name: Deploy Digital Ofrenda to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy_pages:
+    name: Build & Deploy Interactive Digital Ofrenda
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup GitHub Pages Engine
+        uses: actions/configure-pages@v5
+
+      - name: Stage Static Ofrenda Artifacts
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp gits_ance_digital_ofrenda_haunted_code_archaeologist_gemma_local.html _site/
+          if [ -d assets ]; then
+            cp -r assets _site/
+          fi
+          touch _site/.nojekyll
+          echo "✅ Digital Ofrenda static assets staged for GitHub Pages deployment."
+
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
