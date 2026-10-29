@@ -52,7 +52,7 @@
 6. [Quick Start & CLI Usage](#-quick-start--cli-usage)
 7. [Interactive Digital Ofrenda Web App (`index.html`)](#-interactive-digital-ofrenda-web-app-indexhtml)
 8. [Deployment Guide (Render Blueprint & Global CDN)](#-deployment-guide-render-blueprint--global-cdn)
-9. [Automated Test Suite & Verification (41 Tests)](#-automated-test-suite--verification-41-tests)
+9. [Automated Test Suite & Verification (47 Tests)](#-automated-test-suite--verification-47-tests)
 10. [Project File Structure](#-project-file-structure)
 11. [License & Authorship](#-license--authorship)
 
