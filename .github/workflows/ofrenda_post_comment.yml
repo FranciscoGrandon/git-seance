@@ -1,0 +1,115 @@
+# ===============================================================================
+# 🌼🕯️ GitSéance: Secure Ofrenda Memorial Commenter for External Forks 🕯️🌼
+# Creado por Francisco Grandón Vergara
+# Hacktoberfest 2026 Open-Source AI Challenge: Week 4 ("Ghost in the Machine")
+# ===============================================================================
+
+name: Post Ofrenda Memorial from Fork (Secure)
+
+on:
+  workflow_run:
+    workflows: ["Digital Ofrenda Tombstone Generator"]
+    types: [completed]
+
+permissions:
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  publish_from_fork:
+    name: Deliver Ofrenda Memorial to External Pull Request
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Download Ofrenda Artifact from Triggering Workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+
+            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === 'ofrenda-comment');
+            if (!matchArtifact) {
+              console.log('ℹ️ No ofrenda-comment artifact found in triggering run.');
+              return;
+            }
+
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+
+            fs.writeFileSync('ofrenda_artifact.zip', Buffer.from(download.data));
+            console.log('✅ Artifact archive downloaded successfully.');
+
+      - name: Extract Artifact Archive
+        run: |
+          if [ -f ofrenda_artifact.zip ]; then
+            unzip -o ofrenda_artifact.zip
+            ls -la
+          fi
+
+      - name: Post or Update Comment in Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('ofrenda_comment.md') || !fs.existsSync('pr_number.txt')) {
+              console.log('ℹ️ Required artifact files not found.');
+              return;
+            }
+
+            const commentBody = fs.readFileSync('ofrenda_comment.md', 'utf8').trim();
+            const prNumberStr = fs.readFileSync('pr_number.txt', 'utf8').trim();
+            const prNumber = parseInt(prNumberStr, 10);
+
+            if (!prNumber || isNaN(prNumber)) {
+              console.log('ℹ️ Invalid PR number in pr_number.txt:', prNumberStr);
+              return;
+            }
+
+            if (commentBody.length === 0 || commentBody.includes('No departed functions found')) {
+              console.log('ℹ️ No departed code detected in this PR.');
+              return;
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const botComment = comments.find(c =>
+              c.body.includes('<!-- git-seance-ofrenda -->') ||
+              c.body.includes('Digital Ofrenda Memorial — Departed Code Report')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+              console.log(`✅ Digital Ofrenda memorial updated on PR #${prNumber} (Comment ID: ${botComment.id}).`);
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+              console.log(`✅ Digital Ofrenda memorial posted on PR #${prNumber}.`);
+            }
