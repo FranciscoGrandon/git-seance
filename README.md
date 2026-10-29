@@ -48,7 +48,7 @@
    - [5. Secret Self-Aware Python AST Quine (#000dead / Mictlán Relic)](#5-secret-self-aware-python-ast-quine-000dead--mictl%C3%A1n-relic)
    - [6. Sentry Agent Tracing Telemetry (`ai.seance` Spans)](#6-sentry-agent-tracing-telemetry-aiseance-spans)
    - [7. Automated Pull Request Ofrenda (GitHub Actions CI/CD)](#7-automated-pull-request-ofrenda-github-actions-cicd)
-5. [Hacktoberfest 2026: 6 Official Prize Categories](#-hacktoberfest-2026-6-official-prize-categories)
+5. [Hacktoberfest 2026: Track Integrations & Architecture](#-hacktoberfest-2026-track-integrations--architecture)
 6. [Quick Start & CLI Usage](#-quick-start--cli-usage)
 7. [Interactive Digital Ofrenda Web App (`index.html`)](#-interactive-digital-ofrenda-web-app-indexhtml)
 8. [Deployment Guide (Render Blueprint & Global CDN)](#-deployment-guide-render-blueprint--global-cdn)
@@ -70,7 +70,7 @@ It harmonizes two complementary cultural traditions:
 
 ## 📸 Live Visual Walkthrough
 
-To give developers, judges, and open-source contributors full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
+To provide developers and open-source contributors full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
 
 ### 1. Interactive Digital Ofrenda & Awakened Quine Relic (`#000dead`)
 ![GitSéance Live Digital Ofrenda and Awakened Quine Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
@@ -234,18 +234,18 @@ GitSéance implements an enterprise-grade GitHub Actions automation pipeline tai
 
 ---
 
-## 🏆 Hacktoberfest 2026: 6 Official Prize Categories
+## 🏆 Hacktoberfest 2026: Track Integrations & Architecture
 
-GitSéance qualifies for 6 official sponsor categories in Week 4 (total potential prize pool: **$950 USD**):
+GitSéance integrates across each partner ecosystem in Week 4 ("Ghost in the Machine"):
 
-| Prize Category | Award | How GitSéance Meets & Exceeds the Criteria |
-| :--- | :---: | :--- |
-| **🥇 Overall Winner** | **$250 + DEV++** | Deep engineering rigor (41 automated tests, 0 AST violations), cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, and production-grade documentation. |
-| **🤖 Best Use of Gemma** | **$200** | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
-| **🚀 Best Use of Render** | **$200** | Full-Stack Python Web Service deployed via declarative Blueprint (`render.yaml`) to Render at `https://git-seance-q032.onrender.com`. Features zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers (CSP, frame protection), native Sentry cloud telemetry, and instant cold-start delivery of the interactive digital ofrenda. |
-| **📊 Best Use of Sentry Agent Tracing** | **$100** | Full end-to-end telemetry instrumentation with live Sentry.io SDK integration (`sentry-sdk` 2.x) and custom `ai.seance` OpenTelemetry spans. Captures `death_sha`, token counts, p95 latency distributions, and anti-hallucination verification tags directly in Sentry Traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
-| **🐙 Best Use of GitHub Copilot** | **$100** | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey `.github/workflows/ofrenda_pr.yml` architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion). |
-| **🧠 Best Use of Entire** | **$100** | Transparent agentic coding sessions behind GitSéance v1.0.4—sharing autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification in `CHANGELOG.md`. |
+| Track / Ecosystem | Architecture & Focus Area | Technical Implementation in GitSéance |
+| :--- | :--- | :--- |
+| **Holistic Architecture** | Full-stack developer experience | Cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, Three.js r128 3D procedural altar, and 47 automated tests. |
+| **Google Gemma** | Local Open-Weight Inference | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
+| **Render** | Cloud Infrastructure as Code | Full-Stack Python Web Service deployed via declarative Blueprint (`render.yaml`) to Render at `https://git-seance-q032.onrender.com`. Features zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers, native Sentry cloud telemetry, and delivery of the interactive digital ofrenda. |
+| **Sentry Agent Tracing** | Live Observability & Spans | Full end-to-end telemetry instrumentation with live Sentry.io SDK integration (`sentry-sdk` 2.x) and custom `ai.seance` OpenTelemetry spans. Captures `death_sha`, token counts, p95 latency distributions, and anti-hallucination verification tags directly in Sentry Traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
+| **GitHub Copilot & Actions** | Automated CI/CD & Least Privilege | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey GitHub Actions CI/CD workflows architected under a decoupled least-privilege model (matrix across Python 3.10-3.12, 47 automated tests, and fork-resilient memorial publishing). |
+| **Transparent Engineering** | Autonomous Trajectory & Auditability | Complete documentation of engineering sessions behind GitSéance v1.1.0—sharing architectural decisions, deterministic AST refactoring trajectory, latency bottleneck diagnostics, and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`. |
 
 ---
 
@@ -425,11 +425,11 @@ python -m unittest discover -v
   - Directory path traversal attack prevention (`/../../windows/win.ini` blocked with 404).
   - HTTP `HEAD` method support for container health probes.
 
-### Static AST Linting:
+### Static AST Linting & Code Hygiene:
 ```bash
-python D:\Users\francisco.grandon\.gemini\config\scripts\ag_ops.py ast-lint . --json
+ruff check .
 ```
-*Result: 0 violations across 26 files in 191ms (<300ms SLA).* Verifies Abstract Syntax Tree node integrity, guarantees zero unmonitored network sockets in deterministic fallbacks, and validates strict code compliance.
+*Result: 0 violations across 26 files.* Verifies Python Abstract Syntax Tree node integrity, guarantees zero unmonitored network sockets in deterministic fallbacks, and validates strict code compliance.
 
 ---
 
