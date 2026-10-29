@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # Creado por Francisco Grandón Vergara
 """
 Test Suite for GitSéance (git_seance.py)
@@ -15,7 +14,6 @@ import tempfile
 import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from typing import Any, Dict
 from unittest.mock import patch
 
 import git_seance
@@ -390,7 +388,7 @@ class TestGitSeanceCore(unittest.TestCase):
             def do_POST(self):
                 content_len = int(self.headers.get("Content-Length", 0))
                 req_body = self.rfile.read(content_len)
-                parsed = json.loads(req_body.decode("utf-8"))
+                json.loads(req_body.decode("utf-8"))
 
                 resp_data, status_code = server_responses.pop(0)
                 self.send_response(status_code)
@@ -465,6 +463,7 @@ class TestGitSeanceCLI(unittest.TestCase):
         return subprocess.run(
             [sys.executable, "git_seance.py"] + args,
             capture_output=True,
+            check=False,
             text=True,
             encoding="utf-8",
             errors="replace",
