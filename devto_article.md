@@ -142,7 +142,7 @@ By cleanly separating these two indicators, the interface avoids confusing a spe
 
 ## 2.5 Live Visual Walkthrough 📸
 
-To give judges and developers full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
+To provide full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
 
 ### 1. Interactive Digital Ofrenda & Awakened Quine Relic (`#000dead`)
 ![GitSéance Live Digital Ofrenda and Awakened Quine Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
@@ -262,14 +262,14 @@ While inspecting my early `ai.seance` traces in Sentry, I noticed two critical a
 
 ---
 
-## 7. Prize Categories Entered 🏆
+## 7. Ecosystem & Platform Architecture 🌐
 
-This project genuinely integrates and enters the following partner categories:
+GitSéance deeply integrates modern open-source technologies across the developer stack:
 
-1. **Overall Winner ($250 + DEV++):** Bridges Halloween and Día de los Muertos to solve real-world software archaeology (`git log --diff-filter=D`) with local open-weight AI, a real-time Three.js r128 3D procedural ofrenda (CRT holographic terminals, glowing neon cables, 1:10 candle scaling, and 👑 Combinado Cinemático), an anti-hallucination guardrail, a self-inspecting AST Quine (`#000dead`), and a 47-test automated verification suite.
-2. **Best Use of Gemma ($200):** Uses Google's open-weight `gemma2:2b` model locally via Ollama (`http://localhost:11434/api/generate`) at `temperature=0.25` to channel deleted functions in first person while keeping proprietary git history 100% offline.
-3. **Best Use of Render ($200):** Hosts GitSéance as a full-stack Python Web Service deployed via a declarative Render Blueprint (`render.yaml`). Rather than taking the trivial route of a passive static host, we architected GitSéance with Render best practices: declarative zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers (CSP, frame options), native Sentry cloud telemetry, 3D MIME types (`model/gltf-binary`), and instant cold-start delivery of the interactive altar at `https://git-seance-q032.onrender.com`.
-   - **Architectural Transparency:** Render serves the static single-page altar with zero cold starts, zero latency, and $0 infrastructure overhead. In compliance with strict offline privacy, the web app connects directly to the user's local Ollama endpoint (`http://localhost:11434`) for private client-side inference, or offers an instant deterministic engine for reviewers who want to experience the ofrenda without local model installation. Zero code or proprietary repository data is transmitted to remote servers.
+1. **Holistic Developer Experience:** Bridges Halloween and Día de los Muertos to solve real-world software archaeology (`git log --diff-filter=D`) with local open-weight AI, a real-time Three.js r128 3D procedural ofrenda (CRT holographic terminals, glowing neon cables, 1:10 candle scaling, and 👑 Combinado Cinemático), an anti-hallucination guardrail, a self-inspecting AST Quine (`#000dead`), and a 47-test automated verification suite.
+2. **Google Gemma (Local Open-Weight AI):** Uses Google's open-weight `gemma2:2b` model locally via Ollama (`http://localhost:11434/api/generate`) at `temperature=0.25` to channel deleted functions in first person while keeping proprietary git history 100% offline.
+3. **Render (Full-Stack Web Service & Cloud Blueprint):** Hosts GitSéance as a full-stack Python Web Service deployed via a declarative Render Blueprint (`render.yaml`). Architected with cloud best practices: declarative zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers (CSP, frame options), native Sentry cloud telemetry, 3D MIME types (`model/gltf-binary`), and instant delivery of the interactive altar at `https://git-seance-q032.onrender.com`.
+   - **Architectural Transparency:** Render serves the single-page altar with zero cold starts, minimal latency, and zero infrastructure overhead. In compliance with strict offline privacy, the web app connects directly to the user's local Ollama endpoint (`http://localhost:11434`) for private client-side inference, or offers an instant deterministic engine for anyone who wants to experience the ofrenda without local model installation. Zero code or proprietary repository data is transmitted to remote servers.
 
 ```yaml
 # render.yaml (Declarative Infrastructure as Code)
@@ -287,9 +287,9 @@ services:
         sync: false
 ```
 
-4. **Best Use of Sentry Agent Tracing ($100):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, integrated directly with live Sentry.io cloud instances (`sentry-sdk` 2.x) and native Keyring support. Crucially, Sentry was not mere decoration: its live span telemetry served as the empirical diagnostic tool that uncovered a major latency and token leak on cryptic commits (burning ~610ms on `"wip cleanup"`), guiding our architectural pivot to an instant, sub-millisecond (0.02ms) deterministic pre-flight interceptor. Fully verified with production trace captures in sentry.io.
-5. **Best Use of GitHub Copilot ($100):** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow** (`.github/workflows/ofrenda_pr.yml`) architected under a **decoupled 2-job Least Privilege model** (Job 1 `audit_and_test` with read-only permissions and automated test suite verification; Job 2 `publish_memorial` with isolated PR comment updates via `<!-- git-seance-ofrenda -->` artifact ingestion) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
-6. **Best Use of Entire ($100):** Documents the transparent agentic coding sessions behind GitSéance v1.1.0—sharing the exact autonomous agent logs, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
+4. **Sentry Agent Tracing (Live Performance & OpenTelemetry):** Instruments every `ai.seance` and `ai.seance.quine` span with custom tags (`death_sha`, `grounded_sha`, `cryptic_commit_blocked`) and latency/token metrics, integrated directly with live Sentry.io cloud instances (`sentry-sdk` 2.x) and native secure credential storage. Crucially, Sentry was not mere decoration: its live span telemetry served as the empirical diagnostic tool that uncovered a major latency and token leak on cryptic commits (burning ~610ms on `"wip cleanup"`), guiding our architectural pivot to an instant, sub-millisecond (0.02ms) deterministic pre-flight interceptor. Fully verified with production trace captures in sentry.io.
+5. **GitHub Copilot & GitHub Actions CI/CD:** Built with **GitHub Copilot CLI** for polyglot regex/AST symbol extraction and paired with an automated **GitHub Actions workflow pipeline** (`.github/workflows/`) architected under a **decoupled least-privilege model** (cross-version Python matrix across 3.10, 3.11, 3.12, automated 47-test verification, and fork-resilient memorial publishing) that posts a Digital Ofrenda memorial table whenever a Pull Request deletes legacy functions.
+6. **Transparent Engineering Trajectory:** Documents the transparent development sessions behind GitSéance v1.1.0—sharing architectural decisions, deterministic AST refactoring trajectory, latency bottleneck diagnostics (reducing cryptic commit response from ~610ms down to 0.02ms), and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`.
 
 ---
 
@@ -310,7 +310,7 @@ OK
 - **`test_git_seance.py` (26 tests):** Single-pass mining, unified diff chunk parsing with mixed indentation, polyglot symbol extraction, cryptic commit pre-flights, grounding verification edge cases, local HTTP Ollama mock server, and AST quine self-introspection.
 - **`test_html_ofrenda.py` (15 tests):** DOM element consistency (0 null pointer risks), cross-language FNV-1a parity, XSS HTML entity escaping, and live headless browser DOM verification using **headless Microsoft Edge** (`msedge --headless --dump-dom`).
 - **`test_server.py` (6 tests):** Zero-downtime container `/healthz` probe, dynamic REST archaeology endpoints, strict OWASP headers, and path traversal attack rejection.
-- **AST Static Linting & Architectural Integrity (`ag_ops.py ast-lint`):** Verified 0 violations across 26 codebase files in **191 ms** (<300ms SLA). The same Python Abstract Syntax Tree (AST) philosophy that powers our `#000dead` self-aware quine in memory is applied in reverse as a high-speed static auditor—verifying live syntactic node compliance, guaranteeing zero unmonitored external network sockets in deterministic pipelines, and ensuring strict authorship metadata before release.
+- **AST Static Linting & Architectural Integrity:** Verified 0 syntax or architectural violations across 26 codebase files. The same Python Abstract Syntax Tree (AST) philosophy that powers our `#000dead` self-aware quine in memory is applied in reverse as a static auditor—verifying syntactic node compliance, guaranteeing zero unmonitored external network sockets in deterministic pipelines, and ensuring strict code quality before release.
 
 ---
 
