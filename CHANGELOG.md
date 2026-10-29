@@ -5,6 +5,22 @@ Todas las modificaciones notables a este proyecto están documentadas en este ar
 El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
+## [Unreleased]
+
+### Añadido
+- **Suite Integral de GitHub Actions de Clase Mundial:**
+  - `.github/workflows/ci.yml`: Pipeline de Integración Continua con matriz multiplataforma en Python 3.10, 3.11 y 3.12, control de concurrencia (`cancel-in-progress: true`), stage de linter y calidad con Ruff y verificación AST.
+  - `.github/workflows/ofrenda_post_comment.yml`: Flujo de entrega segura de comentarios para Pull Requests provenientes de forks externos mediante el patrón canónico `workflow_run`, resolviendo la limitación de permisos de solo lectura de `GITHUB_TOKEN` en forks de Hacktoberfest sin exponer tokens de escritura a código no confiable.
+  - `.github/workflows/pages.yml`: Despliegue automatizado y continuo de la Ofrenda Digital 3D / Web (`index.html`) a GitHub Pages en cada push a la rama `main` mediante `actions/deploy-pages@v4`.
+  - `.github/workflows/release.yml`: Publicación automatizada de GitHub Releases con extracción de notas desde `CHANGELOG.md` y adjuntos de distribución al pushear tags `v*`.
+  - `.github/dependabot.yml`: Mantenimiento y actualización automatizada semanal de las acciones de GitHub Actions.
+  - `.github/PULL_REQUEST_TEMPLATE.md`: Plantilla estándar de colaboración comunitaria con checklist de pruebas, seguridad y cumplimiento.
+  - `pytest.ini`: Configuración estandarizada para recolección limpia de pruebas unitarias excluyendo directorios de respaldo y caché.
+
+### Cambiado
+- **Ampliación de Cobertura en `ofrenda_pr.yml`:** Ejecución de la suite completa de 47 pruebas unitarias (`test_git_seance.py`, `test_html_ofrenda.py`, `test_server.py`) en lugar de únicamente la prueba CLI de `test_git_seance.py`.
+- **Manejo Resiliente de Permisos en Forks:** Captura explícita de errores HTTP 403 en `ofrenda_pr.yml` para delegación transparente al flujo de publicación desacoplado `ofrenda_post_comment.yml`.
+
 ## [1.1.0] - 2026-10-28
 
 ### Cambiado
