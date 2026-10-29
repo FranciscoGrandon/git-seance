@@ -73,7 +73,7 @@ It harmonizes two complementary cultural traditions:
 To provide developers and open-source contributors full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
 
 ### 1. Interactive Digital Ofrenda & Awakened AST Relic (`#000dead`)
-![GitSéance Live Digital Ofrenda and Awakened Quine Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
+![GitSéance Live Digital Ofrenda and Awakened AST Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
 *Figure 1: The interactive altar with real-time 3D Three.js volcanic tiers, 1,200 instanced cempasúchil marigolds, 4 CRT holographic monitors, glowing neon data cables, and the unlocked `#000dead` Mictlán relic verifying real-time FNV-1a DOM attestation.*
 
 ![GitSéance Real-Time 3D Altar Cinematic Close-Up](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_4_3d_altar_cinematic.png)
@@ -145,7 +145,7 @@ Yet, over 70% of engineering thought, edge-case hardening, and architectural deb
                  ▼                               ▼
     ┌─────────────────────────┐     ┌─────────────────────────┐
     │ Terminal CLI Ofrenda    │     │ Single-Page App Ofrenda │
-    │ + Quine (#000dead)      │     │ (Render / index.html)   │
+    │ + AST Relic (#000dead)  │     │ (Render / index.html)   │
     └─────────────────────────┘     └─────────────────────────┘
 ```
 
@@ -248,11 +248,11 @@ GitSéance integrates across each partner ecosystem in Week 4 ("Ghost in the Mac
 
 | Track / Ecosystem | Architecture & Focus Area | Technical Implementation in GitSéance |
 | :--- | :--- | :--- |
-| **Holistic Architecture** | Full-stack developer experience | Cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, Three.js r128 3D procedural altar, and 47 automated tests. |
+| **Holistic Architecture** | Full-stack developer experience | Cohesive narrative fusing Halloween ghosts with Día de los Muertos cultural reverence, complete CLI + SPA + CI/CD workflow, Three.js r128 3D procedural altar, and 49 automated tests. |
 | **Google Gemma** | Local Open-Weight Inference | Uses Google's `gemma2:2b` 100% locally via Ollama with low temperature (`0.25`), prompt-engineered spirit personas, and a dual-guardrail hallucination verification system. Zero cloud dependencies. |
 | **Render** | Cloud Infrastructure as Code | Full-Stack Python Web Service deployed via declarative Blueprint (`render.yaml`) to Render at `https://git-seance-q032.onrender.com`. Features zero-downtime health checking (`/healthz`), dynamic JSON archaeology REST endpoints (`/api/ghosts`, `POST /api/seance`), OWASP security headers, native Sentry cloud telemetry, and delivery of the interactive digital ofrenda. |
 | **Sentry Agent Tracing** | Live Observability & Spans | Full end-to-end telemetry instrumentation with live Sentry.io SDK integration (`sentry-sdk` 2.x) and custom `ai.seance` OpenTelemetry spans. Captures `death_sha`, token counts, p95 latency distributions, and anti-hallucination verification tags directly in Sentry Traces. Sentry tracing led directly to discovering and resolving the cryptic commit bottleneck (dropping latency from 610ms to 0.02ms). |
-| **GitHub Copilot & Actions** | Automated CI/CD & Least Privilege | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey GitHub Actions CI/CD workflows architected under a decoupled least-privilege model (matrix across Python 3.10-3.12, 47 automated tests, and fork-resilient memorial publishing). |
+| **GitHub Copilot & Actions** | Automated CI/CD & Least Privilege | Built using GitHub Copilot CLI for polyglot regex and AST symbol extraction, paired with turnkey GitHub Actions CI/CD workflows architected under a decoupled least-privilege model (matrix across Python 3.10-3.12, 49 automated tests, and fork-resilient memorial publishing). |
 | **Transparent Engineering** | Autonomous Trajectory & Auditability | Complete documentation of engineering sessions behind GitSéance v1.1.0—sharing architectural decisions, deterministic AST refactoring trajectory, latency bottleneck diagnostics, and continuous SHA-256 integrity verification recorded in `CHANGELOG.md`. |
 
 ---
@@ -292,7 +292,7 @@ Runs completely without Ollama or network sockets:
 python git_seance.py --offline
 ```
 
-### 5. Awaken the Secret AST Quine (#000dead)
+### 5. Awaken the Secret AST Self-Introspection Relic (#000dead)
 ```bash
 python git_seance.py --mictlan
 ```
@@ -329,7 +329,7 @@ The repository includes a single-file, production-ready Single Page Application 
   - **Zero-Flicker 2D Fallback:** Instant seamless toggle to the 2D canvas ofrenda on low-spec hardware or user preference.
 - 🔮 **Conversational Séance Terminal:** Real-time conversational interface with departed code spirits, featuring simulated typing and grounding verification badges.
 - 🛡️ **Cryptic Commit Guardrail Simulator:** Toggle cryptic commits to watch the pre-flight guardrail intercept vague commit messages in real time.
-- 💀 **Mictlán Calavera Easter Egg:** Click the glowing golden skull relic (`#000dead`) to trigger the self-aware AST Quine memorial.
+- 💀 **Mictlán Calavera Easter Egg:** Click the glowing golden skull relic (`#000dead`) to trigger the self-aware AST Self-Introspection relic memorial.
 - 📊 **Sentry Telemetry Dashboard:** Live Chart.js telemetry charts displaying inference latency, token counts, and span breakdowns.
 - 📋 **One-Click DEV.to Post Generator:** Formatted markdown export ready to copy and paste directly into your DEV.to Hacktoberfest submission.
 

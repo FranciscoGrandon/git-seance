@@ -32,6 +32,11 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 - **Manejo Resiliente de Permisos en Forks:** Captura explícita de errores HTTP 403 en `ofrenda_pr.yml` para delegación transparente al flujo de publicación desacoplado `ofrenda_post_comment.yml`.
 
 ### Corregido
+- **Optimización de Rendimiento en Minería ($O(N \times M) \to O(1)$):** Eliminación del re-parseo redundante en disco dentro del bucle de commits en `mine_git_graveyard`, utilizando conjuntos precomputados de símbolos vivos en memoria (`live_symbols` y `live_symbol_names`).
+- **Robustecimiento de Sanitización Anti-Inyección:** Adición de expresiones regulares insensibles a mayúsculas y variantes con espacios en `sanitize_untrusted_git_text` para neutralizar intentos de evasión de bloques `<untrusted_git_data>`, junto con la sanitización de metadatos interpolados en el prompt (`author`, `symbol_name`, `file_path`).
+- **Eliminación de Falsos Positivos en Grounding Léxico:** Ampliación del separador de cláusulas a `re.split(r"[.!?:;—🕯️\n]\s*", text)` e incorporación de `DOMAIN_WHITELIST` (meses, nombres de tecnologías y vocabulario funerario) para evitar el rechazo erróneo de respuestas legítimas de Gemma.
+- **Corrección de Frontera en Verificación de SHA:** Exigencia de frontera léxica o prefijo `#` en `cites_sha` para evitar que commits con hashes cortos coincidan accidentalmente con palabras del idioma inglés.
+- **Erradicación de `--diff-filter=D` en Hero Web:** Sustitución de la referencia contradictoria por `git log -p -U0 (with live HEAD symbol verification)` en `index.html` y su réplica standalone.
 - **Falsos Positivos en Minería de Cementerio Git:** Corrección en `mine_git_graveyard` para validar la supervivencia del símbolo en la punta actual del repositorio (`HEAD`), evitando clasificar como extintos símbolos que continúan existiendo o fueron reactivados.
 
 ## [1.1.0] - 2026-10-28

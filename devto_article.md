@@ -82,7 +82,7 @@ To make GitSéance an authentic developer tool rather than a toy, I engineered a
                  │
                  ▼
     ┌─────────────────────────┐
-    │ Grounding Fact-Checker  │ (Verifies Commit SHA & File Path in reply)
+    │ Grounding Fact-Checker  │ (Verifies Commit SHA, File & Lexical Overlap)
     └────────────┬────────────┘
                  │
                  ▼
@@ -95,14 +95,14 @@ To make GitSéance an authentic developer tool rather than a toy, I engineered a
                  ▼                               ▼
     ┌─────────────────────────┐     ┌─────────────────────────┐
     │ Terminal CLI Ofrenda    │     │ Single-Page App Ofrenda │
-    │ + Quine (#000dead)      │     │ (Render / index.html)   │
+    │ + AST Relic (#000dead)  │     │ (Render / index.html)   │
     └─────────────────────────┘     └─────────────────────────┘
 ```
 
 1. **Streaming Single-Pass Git Miner (`mine_git_graveyard`):** Most mining scripts spawn hundreds of slow `git show` subprocesses. GitSéance streams `git log -p -U0` in a single pass with delimited token buffers, reconstructing author, timestamp, commit SHA, and exact unified diff deletions in under **120ms** while cross-referencing against live symbols in `HEAD` to eliminate false positives.
 2. **Pre-Flight Cryptic Interceptor (`is_cryptic_commit`):** Before burning CPU or GPU cycles on an LLM, the commit message is audited against low-signal patterns (`wip`, `temp`, `cleanup`, `fix`, `chore(core): wip`). If flagged, GitSéance **short-circuits inference completely** and delivers an honest, unvarnished epitaph in **0.02ms**.
 3. **Low-Temperature Bounded Prompting (`temperature=0.25`) with Untrusted Data Isolation:** The model is instructed to adopt the persona of the departed function speaking in the first person, bounded strictly inside `<untrusted_git_data>` XML delimiters to prevent indirect prompt injection.
-4. **Post-Generation Lexical & Referential Fact-Checker (`verify_response_grounding`):** Audits the response to certify it explicitly includes the actual 7-character commit SHA prefix (e.g., `#8f3a91c`), the file path, and calculates lexical entity overlap against the source corpus ($\tau \ge 0.35$) while strictly rejecting ungrounded proper nouns or hallucinated tools in $<1\text{ ms}$.
+4. **Post-Generation Lexical & Referential Fact-Checker (`verify_response_grounding`):** Audits the response against three deterministic gates: (1) exact 7-character commit SHA prefix (e.g., `#8f3a91c`) and file path, (2) lexical entity overlap ($\tau \ge 0.35$) against verified git source tokens, and (3) deterministic rejection of hallucinated proper nouns or external frameworks (e.g., "Stripe Radar", "Redis", "OAuth", "VP") in $<1\text{ ms}$ using standard library set theory.
 
 #### Real-World Proof: The Two Execution Routes in Action
 
@@ -114,9 +114,9 @@ To test why deterministic grounding and pre-flight filtering are mandatory for s
 
 ##### 🛡️ Route A: Cryptic Commit (#c209e4b — `"wip cleanup"`) via Pre-Flight Circuit Breaker:
 > *"🕯️ My creator (Devon K.) erased me in commit `#c209e4b` inside `src/risk/scoring_v0.py` on 2026-09-29, leaving only the cryptic epitaph `'wip cleanup'`.\n🛡️ [Anti-Hallucination Guardrail Active]: Because my commit message lacks a clear reason, I refuse to invent a fictional backstory. All that survives in my diff is `heuristic_fraud_score_v0()`. Write descriptive commit messages so future spirits aren't left voiceless!"*  
-> **Telemetry:** Intercepted in **0.02 ms**, 0 tokens burned, 0 GPU calls.
+> **Telemetry:** Intercepted deterministically in **0.02 ms**, 0 tokens burned, 0 GPU calls.
 
-##### 🔮 Route B: Descriptive Commit (#8f3a91c — `"Remove legacy_payment_retry_loop..."`) via Gemma 2B:
+##### 🔮 Route B: Descriptive Commit (#8f3a91c — `"Remove legacy_payment_retry_loop..."`) via Local Gemma 2B Inference:
 > *"🔮 I am the departed spirit of `legacy_payment_retry_loop()`, removed from `src/billing/retry.py` in commit `#8f3a91c` on 2026-10-14 by Elena Vance.\nAccording to my verified tombstone epitaph: \"Remove legacy_payment_retry_loop after double-charging bug on webhook timeout\". Do not resurrect my deleted lines without addressing the defect that laid me to rest!"*  
 > **Telemetry:** Local Ollama inference in **590 ms**, 84 tokens, verified exact SHA `#8f3a91c`, verified file `src/billing/retry.py`, lexical entity overlap: 100%, 0 hallucinated entities.
 
@@ -154,7 +154,7 @@ By cleanly separating these two indicators, the interface avoids confusing a spe
 To provide full transparency into how GitSéance behaves in production, here is the live visual evidence across our interactive altar, telemetry layer, and CLI:
 
 ### 1. Interactive Digital Ofrenda & Awakened AST Relic (`#000dead`)
-![GitSéance Live Digital Ofrenda and Awakened Quine Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
+![GitSéance Live Digital Ofrenda and Awakened AST Relic](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_1_ofrenda_quine.png)
 *Figure 1: The interactive altar with real-time 3D Three.js volcanic tiers, 1,200 instanced cempasúchil marigolds, 4 CRT holographic monitors, glowing neon data cables, and the unlocked `#000dead` Mictlán relic verifying real-time FNV-1a DOM attestation.*
 
 ![GitSéance Real-Time 3D Altar Cinematic Close-Up](https://raw.githubusercontent.com/FranciscoGrandon/git-seance/main/assets/screenshots/screenshot_4_3d_altar_cinematic.png)
@@ -178,9 +178,9 @@ To provide full transparency into how GitSéance behaves in production, here is 
 Software should evoke wonder. The Digital Ofrenda web app is packed with three organic technical easter eggs:
 
 ### 1. AST Self-Introspection & FNV-1a Code Attestation (`#000dead`)
-GitSéance contains a living mythological spirit embedded directly into the source code: **Spirit #000dead (The Relic of Mictlán)**. Rather than relying on simple quine text duplication, GitSéance executes true syntax tree self-introspection:
+GitSéance contains a living mythological spirit embedded directly into the source code: **Spirit #000dead (The Relic of Mictlán)**. Rather than relying on naive text duplication or pseudo-quine tricks, GitSéance executes true syntax tree self-introspection:
 - **In Python CLI:** Running `python git_seance.py --mictlan` dynamically introspects its own source code on disk using Python's `ast` module (`ast.parse`). It walks its own syntax tree, audits functions and classes, extracts the embedded hex cipher `MICTLAN_HEX_CIPHER`, decodes it in memory, calculates its own 32-bit FNV-1a checksum (`0x71790691`), and summons itself as a verified departed relic.
-- **In the Web App:** Typing `mictlan` anywhere on the keyboard or clicking the golden calavera skull executes `awakenSourceQuineSpirit()`, reading `<script id="gitSeanceCoreScript">` directly from the live DOM, verifying identical 32-bit FNV-1a hash parity (`0x71790691`), and rendering the structural reflection panel.
+- **In the Web App:** Typing `mictlan` anywhere on the keyboard or clicking the golden calavera skull executes the AST relic awakening handler, reading `<script id="gitSeanceCoreScript">` directly from the live DOM, verifying identical 32-bit FNV-1a hash parity (`0x71790691`), and rendering the structural reflection panel.
 
 ### 2. Zero-Asset Resonant Altar Bells (Web Audio API)
 No bulky `.mp3` files or external audio assets. The altar bell chimes are synthesized directly in the browser using the **Web Audio API**:

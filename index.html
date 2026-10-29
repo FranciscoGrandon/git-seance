@@ -204,7 +204,7 @@
               <code class="text-amber-400">git blame</code> only speaks for the living. <span class="bg-gradient-to-r from-amber-300 via-orange-400 to-purple-400 bg-clip-text text-transparent">We summon the code that died.</span>
             </h1>
             <p class="mt-2.5 text-sm leading-relaxed text-slate-300">
-              Every repository stands on the shoulders of deleted functions and retired prototypes. <strong>GitSéance</strong> mines your local <code class="text-amber-300">git log --diff-filter=D</code> graveyard, places departed symbols on a marigold altar, and channels their spirit via local <strong>Google Gemma</strong>—while strictly blocking hallucinations when commit messages are vague.
+              Every repository stands on the shoulders of deleted functions and retired prototypes. <strong>GitSéance</strong> mines your local <code class="text-amber-300">git log -p -U0</code> graveyard (with live HEAD symbol verification), places departed symbols on a marigold altar, and channels their spirit via local <strong>Google Gemma</strong>—while strictly blocking hallucinations when commit messages are vague.
             </p>
           </div>
 
@@ -1405,7 +1405,7 @@ tags: devchallenge, hf26challenge, gemma, opensource
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge: Week 4 (Ghost in the Machine)](https://dev.to/challenges/hacktoberfest-week4-2026-10-26).*
 
 ## What I Built: Honoring the Code That Built Us 🌼🕯️
-\`git blame\` only speaks for the living. I built **GitSéance**, an offline-first CLI and Digital Ofrenda powered by local **Google Gemma (\`gemma2:2b\`)** that mines \`git log --diff-filter=D\`, places deleted functions on an interactive marigold altar, and enforces a deterministic SHA guardrail so small models never hallucinate on cryptic \`"wip"\` commits.`;
+\`git blame\` only speaks for the living. I built **GitSéance**, an offline-first CLI and Digital Ofrenda powered by local **Google Gemma (\`gemma2:2b\`)** that mines \`git log -p -U0\` (with live HEAD symbol verification), places deleted functions on an interactive marigold altar, and enforces a deterministic SHA guardrail so small models never hallucinate on cryptic \`"wip"\` commits.`;
         copyTextSafe(template, "DEV.to Submission Markdown");
       });
 
