@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Automated Test Suite for GitSéance Production Web Service (Render Cloud)
 Creado por Francisco Grandón Vergara
@@ -14,7 +13,6 @@ Tests:
 """
 
 import json
-import os
 import threading
 import time
 import unittest
