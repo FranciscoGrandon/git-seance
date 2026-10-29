@@ -1,0 +1,32 @@
+# ===============================================================================
+# GitSéance Configuration (pyproject.toml)
+# Creado por Francisco Grandón Vergara
+# ===============================================================================
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    "_backups",
+    "scratch",
+    ".gemini",
+    ".git",
+    "__pycache__",
+    "execute_devto_update.py",
+    "generate_all_screenshots.py",
+    "post_to_devto.py",
+    "publish_devto.py",
+    "publish_to_github.py",
+    "update_github_complete_v101.py",
+    "upload_screenshots_to_github.py",
+    "upload_updates_to_github.py",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+python_files = ["test_*.py"]
+norecursedirs = ["_backups", ".git", "scratch", ".gemini", "assets", "__pycache__"]
+addopts = "-v"
