@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 GitSéance Production Server for Render Cloud
 Creado por Francisco Grandón Vergara
@@ -14,14 +13,15 @@ Full-stack production server providing:
 4. Production Sentry.io Agent Tracing instrumentation for cloud HTTP transactions.
 """
 
-import os
-import sys
 import json
-import time
 import mimetypes
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
+import os
+import time
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
+
+import git_seance
 
 # Register modern 3D and web MIME types
 mimetypes.add_type("model/gltf-binary", ".glb")
@@ -38,7 +38,7 @@ try:
             kv = keyring.get_password("EnvVarManagerPro", "SENTRY_DSN")
             if kv:
                 SENTRY_DSN = kv.strip()
-        except Exception:
+        except Exception:  # noqa: BLE001, S110 # nosec B110
             pass
 
     if SENTRY_DSN:
@@ -51,10 +51,8 @@ try:
         SENTRY_ACTIVE = True
     else:
         SENTRY_ACTIVE = False
-except Exception:
+except Exception:  # noqa: BLE001
     SENTRY_ACTIVE = False
-
-import git_seance
 
 START_TIME = time.time()
 BASE_DIR = Path(__file__).parent.resolve()
@@ -128,7 +126,7 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
                 params = parse_qs(parsed.query)
                 limit = min(int(params.get("limit", [5])[0]), 20)
                 ghosts = git_seance.mine_git_graveyard(str(BASE_DIR), limit=limit)
-                
+
                 ghost_list = []
                 for g in ghosts:
                     ghost_list.append({
@@ -142,13 +140,13 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
                         "is_cryptic": g.is_cryptic,
                         "is_quine_relic": g.is_quine_relic,
                     })
-                
+
                 self._respond_json(200, {
                     "count": len(ghost_list),
                     "ghosts": ghost_list,
                     "archaeology_engine": "git-single-pass-miner"
                 })
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 self._respond_json(500, {"error": str(exc)})
             return
 
@@ -193,7 +191,7 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
 
                 symbol = data.get("symbol", "").strip()
                 ghosts = git_seance.mine_git_graveyard(str(BASE_DIR), limit=10)
-                
+
                 selected = None
                 if symbol:
                     for g in ghosts:
@@ -214,7 +212,7 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
                     model_name="gemma-local",
                     force_offline=True
                 )
-                
+
                 trace = res.get("trace")
                 self._respond_json(200, {
                     "symbol": selected.symbol_name,
@@ -233,25 +231,36 @@ class GitSeanceHandler(BaseHTTPRequestHandler):
                         "tokens_generated": trace.tokens_generated if trace else 0,
                     } if trace else None
                 })
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 self._respond_json(500, {"error": str(exc)})
             return
 
         self._respond_json(404, {"error": "Not Found", "path": parsed.path})
 
-def run_server(port: int = None):
+
+def run_server(port: int | None = None) -> None:
+    """
+    Run GitSéance production HTTP server listening on the specified port.
+
+    Args:
+        port: Integer port to bind (defaults to $PORT environment variable or 8000).
+
+    Example:
+        >>> run_server(8080)
+    """
     if port is None:
-        port = int(os.environ.get("PORT", 8000))
-    server_address = ("0.0.0.0", port)
+        port = int(os.environ.get("PORT", "8000"))
+    server_address = ("0.0.0.0", port)  # nosec B104
     httpd = HTTPServer(server_address, GitSeanceHandler)
     print(f"🕯️ GitSéance Full-Stack Web Service listening on http://0.0.0.0:{port}")
     print(f"📊 Sentry Cloud Telemetry: {'Active' if SENTRY_ACTIVE else 'Disabled'}")
-    print(f"🛡️ Security Headers & /healthz active for Render Cloud.")
+    print("🛡️ Security Headers & /healthz active for Render Cloud.")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nShutting down GitSéance server...")
         httpd.server_close()
+
 
 if __name__ == "__main__":
     run_server()
