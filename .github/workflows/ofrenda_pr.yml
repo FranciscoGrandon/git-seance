@@ -9,6 +9,11 @@ name: Digital Ofrenda Tombstone Generator
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+concurrency:
+  group: ofrenda-pr-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions: {}
 
@@ -31,8 +36,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run Unit Test Suite
-        run: python3 -m unittest test_git_seance.py -v
+      - name: Run Complete Unit Test Suite
+        run: python3 -m unittest test_git_seance.py test_html_ofrenda.py test_server.py -v
 
       - name: Detect Departed Functions & Generate Memorial
         id: generate_memorial
@@ -42,14 +47,17 @@ jobs:
           else
             python3 git_seance.py --ci-summary --no-fallback > ofrenda_comment.md
           fi
+          echo "${{ github.event.pull_request.number }}" > pr_number.txt
           cat ofrenda_comment.md
 
       - name: Upload Memorial Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ofrenda-comment
-          path: ofrenda_comment.md
-          retention-days: 1
+          path: |
+            ofrenda_comment.md
+            pr_number.txt
+          retention-days: 2
 
   publish_memorial:
     name: Post Ofrenda Memorial to Pull Request
@@ -57,6 +65,7 @@ jobs:
     needs: audit_and_test
     permissions:
       pull-requests: write
+      issues: write
 
     steps:
       - name: Download Memorial Artifact
@@ -69,36 +78,55 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            if (fs.existsSync('ofrenda_comment.md')) {
-              const commentBody = fs.readFileSync('ofrenda_comment.md', 'utf8').trim();
-              if (commentBody.length > 0 && !commentBody.includes('No departed functions found')) {
-                const { data: comments } = await github.rest.issues.listComments({
-                  issue_number: context.issue.number,
+            if (!fs.existsSync('ofrenda_comment.md')) {
+              console.log('ℹ️ No ofrenda_comment.md artifact found.');
+              return;
+            }
+            const commentBody = fs.readFileSync('ofrenda_comment.md', 'utf8').trim();
+            if (commentBody.length === 0 || commentBody.includes('No departed functions found')) {
+              console.log('ℹ️ No departed code detected in this pull request.');
+              return;
+            }
+
+            const issueNumber = context.issue && context.issue.number ? context.issue.number :
+              (fs.existsSync('pr_number.txt') ? parseInt(fs.readFileSync('pr_number.txt', 'utf8').trim(), 10) : null);
+
+            if (!issueNumber) {
+              console.log('ℹ️ No pull request number identified in this context.');
+              return;
+            }
+
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                issue_number: issueNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              const botComment = comments.find(c =>
+                c.body.includes('<!-- git-seance-ofrenda -->') ||
+                c.body.includes('Digital Ofrenda Memorial — Departed Code Report')
+              );
+              if (botComment) {
+                await github.rest.issues.updateComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: commentBody
                 });
-                const botComment = comments.find(c =>
-                  c.body.includes('<!-- git-seance-ofrenda -->') ||
-                  c.body.includes('Digital Ofrenda Memorial — Departed Code Report')
-                );
-                if (botComment) {
-                  await github.rest.issues.updateComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: botComment.id,
-                    body: commentBody
-                  });
-                  console.log(`✅ Digital Ofrenda tombstone comment updated successfully (ID: ${botComment.id}).`);
-                } else {
-                  await github.rest.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: commentBody
-                  });
-                  console.log('✅ Digital Ofrenda tombstone comment posted successfully.');
-                }
+                console.log(`✅ Digital Ofrenda tombstone comment updated successfully (ID: ${botComment.id}).`);
               } else {
-                console.log('ℹ️ No departed code detected in this pull request.');
+                await github.rest.issues.createComment({
+                  issue_number: issueNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: commentBody
+                });
+                console.log('✅ Digital Ofrenda tombstone comment posted successfully.');
+              }
+            } catch (err) {
+              if (err.status === 403) {
+                console.log('⚠️ PR from external fork detected (read-only GITHUB_TOKEN). Memorial comment will be posted securely via companion workflow_run workflow.');
+              } else {
+                throw err;
               }
             }
