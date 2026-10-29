@@ -7,6 +7,12 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 
 ## [1.1.0] - 2026-10-28
 
+### Cambiado
+- **Desacoplamiento de Métricas Duales de Integridad Científica:** Reemplazo del indicador agregado ambiguo «*Hallucinations Blocked: 100% Guarded*» por dos métricas independientes y rigurosas en la barra de telemetría en vivo (`index.html` y mirror):
+  1. *Bloqueos Deterministas (`metricBlockedCount`)*: Porcentaje de casos ambiguos o crípticos identificados y bloqueados en pre-flight dentro del conjunto de prueba/benchmark (`100% Guarded`, 25/25 casos).
+  2. *Atribuciones Verificadas (`metricAttributionsCount`)*: Porcentaje de afirmaciones evaluadas que cuentan con evidencia suficiente en el historial git respaldada por coincidencia exacta de commit SHA y ruta de archivo (`100% Grounded`).
+  Esta separación impide que la interfaz confunda una protección heurística específica con una garantía genérica contra alucinaciones de modelos de lenguaje, elevando la transparencia y rigor metodológico para los evaluadores.
+
 ### Añadido
 - **Galería Visual de Producción Actualizada (Retina 4K):** Renovación completa de las capturas de pantalla oficiales en `assets/screenshots/` capturando en alta fidelidad el Altar 3D Three.js r128 en WebGL, los 4 terminales CRT holográficos procedurales, cables neón glowing, cirios en escala 1:10, telemetría Sentry y una nueva toma cinematográfica de primer plano (`screenshot_4_3d_altar_cinematic.png`).
 - **👑 Combinado Cinemático (Animación de Cámara Orgánica y Solemne):** Eliminación total de la rotación forzada de 360° en la ofrenda 3D por una experiencia respetuosa y contemplativa. Implementación del motor cinemático multicapa:

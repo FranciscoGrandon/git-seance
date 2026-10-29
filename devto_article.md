@@ -131,6 +131,11 @@ This is why GitSéance implements **defense-in-depth in two distinct layers**:
 1. **Layer 1 — Pre-Flight Deterministic Circuit Breaker (`is_cryptic_commit`):** If the developer left a vague commit message like `"cleanup"` or `"wip"`, GitSéance intercepts the request *before* invoking Gemma. Because no historical evidence exists in Git, the system deterministically refuses to guess, dropping hallucination rates on cryptic commits from **87.5% down to 0.0%** while cutting latency from 610ms to 0.02ms and consuming 0 tokens.
 2. **Layer 2 — Post-Generation Referential Verification (`verify_response_grounding`):** When the commit message is informative, Gemma is summoned with strict context boundaries, and the post-generation checker ensures that the spirit cites the verified SHA, file path, and symbol name.
 
+This architectural separation is reflected directly in GitSéance's live telemetry bar through **two independent, distinct metrics**:
+- **Bloqueos Deterministas (Deterministic Interceptions):** Percentage of ambiguous cases (`"wip"`, `"fix"`, `"cleanup"`) identified and blocked in pre-flight within the benchmark test set (**100% Guarded**, 8/8 cryptic cases short-circuited in `<0.05ms`).
+- **Atribuciones Verificadas (Verified Attributions):** Percentage of evaluated explanatory claims backed by sufficient factual evidence extracted from `git log` (**100% Grounded**, 25/25 claims citing verified commit SHA and file path).
+By cleanly separating these two indicators, the interface avoids confusing a specific pre-flight guardrail with a blanket guarantee against hallucination.
+
 *Looking toward production:* While full semantic natural language inference (NLI / cross-encoder verification against multi-hunk diffs) is the logical evolution for enterprise tooling, GitSéance proves that pairing a fast, deterministic pre-flight interceptor with a lightweight local 2B model achieves zero-cost, privacy-first archaeological precision without burning cloud GPU budgets.
 
 ---

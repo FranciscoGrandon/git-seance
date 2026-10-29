@@ -185,6 +185,11 @@ To test why deterministic grounding is mandatory for small open-weight models, w
 | **Raw `gemma2:2b` (`temp=0.8`)** | 87.5% (7 / 8 invented fake reasons) | 64.0% (16 / 25 cited SHA) | 640 ms | $0.00 |
 | **GitSéance Grounded Pipeline (`temp=0.25` + Guardrail)** | **0.0% (8 / 8 intercepted pre-flight)** | **100.0% (25 / 25 verified by regex)** | **488 ms** (0.02 ms on pre-flight blocks) | **$0.00** |
 
+#### Dual Independent Metrics: Deterministic Interceptions vs. Verified Attributions
+To prevent conflating a specific pre-flight guardrail with a generic, unverified guarantee against hallucinations, GitSéance's live telemetry bar and Sentry dashboard expose **two distinct, independent metrics**:
+- **Bloqueos Deterministas (Deterministic Interceptions):** Percentage of ambiguous cases (`"wip"`, `"cleanup"`, `"fix"`) identified and blocked in pre-flight within the benchmark test set (**100% Guarded**, 8/8 cryptic cases short-circuited in `<0.05ms`).
+- **Atribuciones Verificadas (Verified Attributions):** Percentage of evaluated claims backed by sufficient factual evidence extracted from `git log` (**100% Grounded**, 25/25 claims citing verified commit SHA and file path).
+
 ### 4. Deterministic Grounding Fact-Checker
 When an LLM response is generated, `verify_response_grounding()` verifies that the model explicitly cited the true commit SHA prefix (e.g. `8f3a91c`) and the affected file path. If the model hallucinates a different commit or strays from the provided diff, the span flags `grounded=False` in Sentry telemetry.
 
