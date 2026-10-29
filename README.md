@@ -211,12 +211,26 @@ Modern AI agent architectures require deep observability. GitSéance instruments
   - `latency_ms` & `tokens_generated`: Precise performance metrics.
 - **Dual Observation Layer:** Spans can be exported to JSON via `--export-traces traces.json`, viewed on the interactive Web App telemetry dashboard with live Chart.js graphs, or explored directly in **Sentry.io Explore Traces / Performance**.
 
-### 7. Automated Pull Request Ofrenda (GitHub Actions CI/CD)
-Whenever a developer opens a Pull Request that deletes functions, `.github/workflows/ofrenda_pr.yml` executes:
-```bash
-python3 git_seance.py --ci-summary --no-fallback --range "origin/${{ github.base_ref }}..HEAD" > ofrenda_comment.md
-```
-It posts an automated Digital Ofrenda tombstone comment with collapsible `<details>` diff blocks directly onto the PR discussion thread, reminding the team of the code that paved the way for their refactor.
+### 7. Automated Pull Request Ofrenda & CI/CD (GitHub Actions)
+GitSéance implements an enterprise-grade GitHub Actions automation pipeline tailored for open-source Hacktoberfest contributions:
+
+1. **`ci.yml` (Continuous Integration Matrix & Lint):**
+   - **Cross-Version Matrix:** Executes all 47 unit tests across Python 3.10, 3.11, and 3.12 on `ubuntu-latest`.
+   - **Static Analysis & AST Checks:** Fast linting and format enforcement with Ruff, plus Python AST syntax validation.
+   - **Concurrency Control:** `cancel-in-progress: true` prevents redundant runs on rapid commits.
+
+2. **`ofrenda_pr.yml` & `ofrenda_post_comment.yml` (Decoupled Ofrenda Memorial Bot):**
+   - Whenever a developer opens a Pull Request that deletes functions, `ofrenda_pr.yml` executes:
+   ```bash
+   python3 git_seance.py --ci-summary --no-fallback --range "origin/${{ github.base_ref }}..HEAD" > ofrenda_comment.md
+   ```
+   - **Fork Resilience & Least Privilege:** Operates in `permissions: contents: read` during PR analysis. For external forks (where standard `GITHUB_TOKEN` is read-only), the companion `ofrenda_post_comment.yml` workflow triggers via `workflow_run` on the base branch to safely post the memorial comment without exposing write tokens to untrusted fork PR code.
+
+3. **`pages.yml` (Live 3D Ofrenda on GitHub Pages):**
+   - Automatically builds and deploys `index.html` (and static assets) to GitHub Pages on every push to `main` via `actions/deploy-pages@v4`.
+
+4. **`release.yml` (Automated GitHub Releases):**
+   - On version tags (`v*`), extracts release notes from `CHANGELOG.md` and publishes the GitHub Release with attached distribution assets.
 
 ---
 
@@ -424,8 +438,14 @@ python D:\Users\francisco.grandon\.gemini\config\scripts\ag_ops.py ast-lint . --
 ```
 Hacktoberfest/
 ├── .github/
-│   └── workflows/
-│       └── ofrenda_pr.yml      # GitHub Actions PR Ofrenda tombstone workflow
+│   ├── workflows/
+│   │   ├── ci.yml                    # Multi-version CI matrix, Ruff lint & AST check
+│   │   ├── ofrenda_pr.yml            # PR tombstone generator (read-only audit & tests)
+│   │   ├── ofrenda_post_comment.yml  # Secure fork PR commenter via workflow_run
+│   │   ├── pages.yml                 # Automated deployment to GitHub Pages
+│   │   └── release.yml               # Automated GitHub Releases from tags
+│   ├── dependabot.yml                # Automated weekly GitHub Actions updates
+│   └── PULL_REQUEST_TEMPLATE.md      # Community contribution PR template
 ├── assets/
 │   └── screenshots/            # High-resolution production showcase captures
 │       ├── screenshot_1_ofrenda_quine.png
