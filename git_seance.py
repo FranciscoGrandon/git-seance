@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # Creado por Francisco Grandón Vergara
 r"""
 ===============================================================================
@@ -45,13 +44,13 @@ import inspect
 import json
 import os
 import re
-import subprocess
+import subprocess  # nosec B404
 import sys
 import time
 import urllib.error
 import urllib.request
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 # Optional Sentry SDK integration. If sentry-sdk isn't installed, we degrade
 # gracefully instead of turning the séance itself into an unhandled exception.
@@ -66,7 +65,7 @@ try:
             keyring_val = keyring.get_password("EnvVarManagerPro", "SENTRY_DSN")
             if keyring_val:
                 SENTRY_DSN = keyring_val.strip()
-        except Exception:
+        except Exception:  # noqa: BLE001, S110 # nosec B110
             pass
 
     if SENTRY_DSN:
@@ -119,7 +118,7 @@ def _configure_terminal() -> bool:
         if hasattr(stream, "reconfigure"):
             try:
                 stream.reconfigure(encoding="utf-8", errors="replace")
-            except Exception:
+            except Exception:  # noqa: BLE001, S110 # nosec B110
                 pass
 
     # Respect NO_COLOR and non-interactive pipes so CI logs don't look like
@@ -136,7 +135,7 @@ def _configure_terminal() -> bool:
             mode = ctypes.c_ulong()
             if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
                 kernel32.SetConsoleMode(handle, mode.value | 0x0004)  # ENABLE_VIRTUAL_TERMINAL_PROCESSING
-        except Exception:
+        except Exception:  # noqa: BLE001, S110 # nosec B110
             pass
     return True
 
@@ -162,7 +161,7 @@ DEFAULT_MODEL = os.getenv("GEMMA_MODEL", "gemma2:2b")
 # The classic Friday 4:59 PM vocabulary. If a commit message consists solely of
 # these tokens, the author was either fleeing a production incident or rebasing
 # in secret.
-CRYPTIC_KEYWORDS: Set[str] = {
+CRYPTIC_KEYWORDS: set[str] = {
     "wip",
     "wip cleanup",
     "fix",
@@ -267,7 +266,7 @@ def compute_fnv1a_32(data: bytes) -> str:
     return f"0x{h:08x}"
 
 
-def inspect_own_source_quine() -> Dict[str, Any]:
+def inspect_own_source_quine() -> dict[str, Any]:
     """
     Reads this script's own running source code and parses its Python AST in
     memory—the software equivalent of reading your own autopsy report while
@@ -275,7 +274,7 @@ def inspect_own_source_quine() -> Dict[str, Any]:
     """
     try:
         own_source = inspect.getsource(sys.modules[__name__])
-    except Exception:
+    except Exception:  # noqa: BLE001
         with open(__file__, "r", encoding="utf-8") as f:
             own_source = f.read()
 
@@ -299,7 +298,7 @@ def inspect_own_source_quine() -> Dict[str, Any]:
     # rather than hardcoding line offsets. Hardcoded slices break the moment
     # someone adds an import at the top, leaving the quine pointing at `import re`
     # like an amateur medium.
-    quine_slice: List[str] = []
+    quine_slice: list[str] = []
     for node in tree.body:
         if isinstance(node, ast.Assign):
             for target in node.targets:
@@ -357,31 +356,32 @@ def build_quine_ghost() -> DepartedCodeGhost:
 # =============================================================================
 # 2. DETERMINISTIC SINGLE-PASS GIT GRAVEYARD MINER
 # =============================================================================
-def run_git_command(args: List[str], repo_path: str = ".") -> str:
+def run_git_command(args: list[str], repo_path: str = ".") -> str:
     try:
         proc = subprocess.run(
             ["git", "-C", repo_path] + args,
             capture_output=True,
+            check=False,
             text=True,
             encoding="utf-8",
             errors="replace",
             timeout=20,
-        )
+        )  # nosec B603
         if proc.returncode != 0:
             return ""
         return proc.stdout.strip()
-    except Exception:
+    except Exception:  # noqa: BLE001
         return ""
 
 
-def _extract_symbol_name(code_line: str) -> Optional[str]:
+def _extract_symbol_name(code_line: str) -> str | None:
     match = SYMBOL_PATTERNS.match(code_line)
     if not match:
         return None
     return match.group(1) or match.group(2)
 
 
-def _extract_python_ast_symbols(removed_lines: List[str]) -> Set[str]:
+def _extract_python_ast_symbols(removed_lines: list[str]) -> set[str]:
     """
     Feeds removed diff lines into `ast.parse`. Diffs are often partial fragments
     that fail syntax checks, so if the parser complains, we quietly Pocket-Sand
@@ -408,8 +408,8 @@ def _extract_python_ast_symbols(removed_lines: List[str]) -> Set[str]:
             continue
 
     # Fallback to chunk-based parsing for mixed-indentation diff hunks
-    found_symbols: Set[str] = set()
-    chunk: List[str] = []
+    found_symbols: set[str] = set()
+    chunk: list[str] = []
     sym_start = re.compile(r"^\s*(?:async\s+def|def|class)\s+")
     for line in cleaned:
         if sym_start.match(line) and chunk:
@@ -446,7 +446,7 @@ def mine_git_graveyard(
     limit: int = 5,
     revision_range: str = "",
     allow_fallback: bool = True,
-) -> List[DepartedCodeGhost]:
+) -> list[DepartedCodeGhost]:
     """
     Streams commit metadata and unified-0 patches in a single `git log -p` call.
     Spawning a separate `git show` subprocess per commit is how a harmless CLI
@@ -473,8 +473,8 @@ def mine_git_graveyard(
     if not raw_stream:
         return get_fallback_tombstones()[:limit] if allow_fallback else []
 
-    ghosts: List[DepartedCodeGhost] = []
-    seen_symbols: Set[Tuple[str, str]] = set()
+    ghosts: list[DepartedCodeGhost] = []
+    seen_symbols: set[tuple[str, str]] = set()
 
     raw_commits = [chunk for chunk in raw_stream.split(commit_marker) if chunk.strip()]
     for commit_chunk in raw_commits:
@@ -488,10 +488,10 @@ def mine_git_graveyard(
         # Isolate removed lines per file and record any symbol names that also
         # appear on `+` lines. If `def foo()` was removed on line 10 and added
         # on line 12 with a type hint, it didn't die—it just got a makeover.
-        current_file: Optional[str] = None
-        file_removed: Dict[str, List[str]] = {}
-        file_deleted_syms: Dict[str, List[Tuple[str, int]]] = {}
-        commit_added_syms: Set[str] = set()
+        current_file: str | None = None
+        file_removed: dict[str, list[str]] = {}
+        file_deleted_syms: dict[str, list[tuple[str, int]]] = {}
+        commit_added_syms: set[str] = set()
 
         for p_line in lines[1:]:
             if p_line.startswith("--- a/"):
@@ -552,7 +552,7 @@ def mine_git_graveyard(
     return get_fallback_tombstones()[:limit] if allow_fallback else []
 
 
-def get_fallback_tombstones() -> List[DepartedCodeGhost]:
+def get_fallback_tombstones() -> list[DepartedCodeGhost]:
     """
     Synthetic ghosts for fresh repositories, shallow CI clones (`fetch-depth: 1`),
     or teams that routinely squash-and-force-push their history into oblivion.
@@ -610,7 +610,7 @@ def get_fallback_tombstones() -> List[DepartedCodeGhost]:
 # =============================================================================
 # 3. GROUNDED GEMMA SÉANCE ENGINE + ANTI-HALLUCINATION GUARDRAIL
 # =============================================================================
-def verify_response_grounding(text: str, ghost: DepartedCodeGhost) -> Dict[str, bool]:
+def verify_response_grounding(text: str, ghost: DepartedCodeGhost) -> dict[str, bool]:
     """
     Post-generation fact-check: a spirit is only allowed to speak if it cites
     its actual commit SHA and file name. Unverifiable Mediums get evicted.
@@ -696,7 +696,7 @@ def _record_sentry_span(trace_span: SeanceTraceSpan) -> None:
         flush_fn = getattr(sentry_sdk, "flush", None)
         if flush_fn:
             flush_fn(timeout=2.0)
-    except Exception:
+    except Exception:  # noqa: BLE001, S110 # nosec B110
         pass
 
 
@@ -705,7 +705,7 @@ def summon_gemma_spirit(
     question: str,
     model_name: str = DEFAULT_MODEL,
     force_offline: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Summons local Google Gemma via Ollama at temperature=0.25—warm enough for
     first-person theatricality, cold enough that a 2B model doesn't invent a
@@ -756,7 +756,7 @@ def summon_gemma_spirit(
             headers={"Content-Type": "application/json"},
         )
         try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with urllib.request.urlopen(req, timeout=30) as resp:  # nosec B310
                 body = json.loads(resp.read().decode("utf-8"))
                 reply = body.get("response", "").strip()
                 tokens = int(body.get("eval_count", len(reply.split())))
@@ -768,7 +768,7 @@ def summon_gemma_spirit(
                 else:
                     reply = build_deterministic_fallback_reply(ghost, question)
                     engine_source = "grounding_audit_fallback"
-        except Exception:
+        except Exception:  # noqa: BLE001
             # Ollama isn't running, or the model is still downloading over hotel Wi-Fi.
             reply = build_deterministic_fallback_reply(ghost, question)
             engine_source = "deterministic_fallback"
@@ -799,7 +799,7 @@ def summon_gemma_spirit(
 # =============================================================================
 # 4. TERMINAL OFRENDA RENDERER & CI MARKDOWN GENERATOR
 # =============================================================================
-def print_ofrenda_altar(ghosts: List[DepartedCodeGhost], model_name: str = DEFAULT_MODEL) -> None:
+def print_ofrenda_altar(ghosts: list[DepartedCodeGhost], model_name: str = DEFAULT_MODEL) -> None:
     C = AltarPalette
     print(f"\n{C.MARIGOLD}{'🌼' * 32}{C.RESET}")
     print(
@@ -831,7 +831,7 @@ def print_ofrenda_altar(ghosts: List[DepartedCodeGhost], model_name: str = DEFAU
         print(f"      📜 Epitaph : \"{g.commit_message}\"\n")
 
 
-def generate_ci_markdown_summary(ghosts: List[DepartedCodeGhost]) -> str:
+def generate_ci_markdown_summary(ghosts: list[DepartedCodeGhost]) -> str:
     """
     Formats the memorial as a GitHub-flavored Markdown report with collapsible
     `<details>` diff blocks so PR reviewers get the lore without scrolling past
@@ -980,7 +980,7 @@ def main() -> int:
     # Resolve which spirit(s) get the microphone. If no `--symbol` was passed,
     # summon the top ghost plus the first cryptic commit we find so the
     # anti-hallucination guardrail gets a live demonstration.
-    targets: List[DepartedCodeGhost] = []
+    targets: list[DepartedCodeGhost] = []
     if args.symbol:
         if args.symbol.isdigit():
             idx = int(args.symbol) - 1
@@ -998,7 +998,7 @@ def main() -> int:
         if cryptic_candidates:
             targets.append(cryptic_candidates[0])
 
-    traces: List[Dict[str, Any]] = []
+    traces: list[dict[str, Any]] = []
     for target in targets:
         print(
             f"{C.PURPLE}🔮 Summoning `{C.BOLD}{target.symbol_name}(){C.RESET}{C.PURPLE}` "
