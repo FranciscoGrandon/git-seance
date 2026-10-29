@@ -8,6 +8,11 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
 ## [Unreleased]
 
 ### Añadido
+- **Verificación de Supervivencia de Símbolos en HEAD (`get_live_symbols_in_head`):** Inspección estática del árbol de código vivo para comprobar si una función/clase eliminada en un commit histórico fue posteriormente reintroducida o conservada, eliminando falsos positivos de reliquias extintas en `mine_git_graveyard`.
+- **Defensa Anti-Inyección Indirecta por Delimitación XML:** Encapsulación estricta de mensajes de commit, diffs y metadatos no confiables bajo etiquetas `<untrusted_git_data>`, desarmando vectores de inyección indirecta (prompt injection) antes de procesarlos con Gemma 2B.
+- **Grounding Léxico con Detección Determinista de Alucinaciones:** Implementación en `verify_response_grounding` de un umbral de solapamiento léxico de tokens significativos ($\tau \ge 0.35$), filtrado de stopwords y veto determinista de entidades no fundamentadas en el repositorio (ej. "Stripe Radar", "Redis").
+- **Badge de Estado de Conexión en Ofrenda Digital (UI):** Indicador visual interactivo en la barra de navegación que refleja en tiempo real el modo de conexión (`🟢 Connected to Local Ollama (127.0.0.1:11434)` vs `🟡 Offline Demo Mode (Deterministic Pre-baked Relics)`).
+- **Suite de Pruebas Expandida (49 Tests):** Cobertura completa con 49 tests automatizados (28 en `test_git_seance.py`, 15 en `test_html_ofrenda.py`, 6 en `test_server.py`), incluyendo validación de supervivencia de símbolos, sanitización anti-inyección, grounding léxico y paridad de hash.
 - **Suite Integral de GitHub Actions de Clase Mundial:**
   - `.github/workflows/ci.yml`: Pipeline de Integración Continua con matriz multiplataforma en Python 3.10, 3.11 y 3.12, control de concurrencia (`cancel-in-progress: true`), stage de linter y calidad con Ruff y verificación AST.
   - `.github/workflows/ofrenda_post_comment.yml`: Flujo de entrega segura de comentarios para Pull Requests provenientes de forks externos mediante el patrón canónico `workflow_run`, resolviendo la limitación de permisos de solo lectura de `GITHUB_TOKEN` en forks de Hacktoberfest sin exponer tokens de escritura a código no confiable.
@@ -18,8 +23,16 @@ y este proyecto se adhiere a Semantic Versioning (`SemVer`).
   - `pytest.ini`: Configuración estandarizada para recolección limpia de pruebas unitarias excluyendo directorios de respaldo y caché.
 
 ### Cambiado
-- **Ampliación de Cobertura en `ofrenda_pr.yml`:** Ejecución de la suite completa de 47 pruebas unitarias (`test_git_seance.py`, `test_html_ofrenda.py`, `test_server.py`) en lugar de únicamente la prueba CLI de `test_git_seance.py`.
+- **Desagregación Estadística de Benchmark ($n=25$):** Reemplazo de la métrica agregada ambigua por dos tablas desglosadas independientes: Ruta A (Intercepciones Deterministas en 0.02ms, 100% de precisión ante commits crípticos) y Ruta B (Atribuciones Verificadas asistidas por Gemma 2B en 590ms, 100% fundamentadas con $\tau \ge 0.35$).
+- **Rectificación Arquitectónica y Terminológica de Reliquia:** Sustitución del término impreciso "Quine" por "Introspección AST y Atestación Criptográfica de Código (FNV-1a)", describiendo fielmente el mecanismo de validación de integridad sin auto-reproducción de código fuente.
+- **Clarificación de Aislamiento de Red:** Documentación explícita de que GitSéance opera en Modo Air-Gapped por defecto utilizando exclusivamente la biblioteca estándar de Python (`urllib.request`), siendo `sentry-sdk` una dependencia opcional de observabilidad.
+- **Estandarización al Inglés de Telemetría en UI Web:** Traducción de tooltips y etiquetas ("Deterministic Interceptions", "Verified Attributions", "Extracted symbols", "1:10 scale (270 cap.)") para consistencia idiomática con el panel de control.
+- **Checkout Completo en CI:** Adición de `fetch-depth: 0` en GitHub Actions (`ofrenda_pr.yml`) para garantizar que la minería del historial git tenga acceso al árbol de commits completo.
+- **Ampliación de Cobertura en `ofrenda_pr.yml`:** Ejecución de la suite completa de 49 pruebas unitarias (`test_git_seance.py`, `test_html_ofrenda.py`, `test_server.py`) en lugar de únicamente la prueba CLI de `test_git_seance.py`.
 - **Manejo Resiliente de Permisos en Forks:** Captura explícita de errores HTTP 403 en `ofrenda_pr.yml` para delegación transparente al flujo de publicación desacoplado `ofrenda_post_comment.yml`.
+
+### Corregido
+- **Falsos Positivos en Minería de Cementerio Git:** Corrección en `mine_git_graveyard` para validar la supervivencia del símbolo en la punta actual del repositorio (`HEAD`), evitando clasificar como extintos símbolos que continúan existiendo o fueron reactivados.
 
 ## [1.1.0] - 2026-10-28
 

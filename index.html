@@ -161,7 +161,7 @@
           <div class="flex items-center gap-2">
             <span class="text-lg font-extrabold tracking-tight text-white">Git<span class="text-amber-400">Séance</span></span>
             <span class="rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[11px] font-semibold text-amber-300">HF26 Week 4</span>
-            <span class="hidden rounded-full border border-emerald-400/40 bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-300 sm:inline-block">Gemma 2B Local · $0 Cost</span>
+            <span id="connectionStatusBadge" class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">🟡 Offline Demo Mode (Deterministic Pre-baked Relics)</span>
           </div>
           <p class="text-xs text-slate-400">Offline Digital Ofrenda &amp; Anti-Hallucination Git Archaeologist</p>
         </div>
@@ -213,22 +213,22 @@
             <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3">
               <div class="text-[11px] font-medium text-slate-400">Departed Spirits</div>
               <div id="metricSpiritsCount" class="mt-0.5 text-lg font-extrabold text-amber-400">4 Functions</div>
-              <div class="text-[10px] text-slate-500">Símbolos extraídos</div>
+              <div class="text-[10px] text-slate-500">Extracted symbols</div>
             </div>
             <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3">
               <div class="text-[11px] font-medium text-slate-400">Candles Lit 🕯️</div>
               <div id="metricCandlesCount" class="mt-0.5 text-lg font-extrabold text-orange-400">27 Ofrendas</div>
-              <div class="text-[10px] text-slate-500">Escala 1:10 (270 cap.)</div>
+              <div class="text-[10px] text-slate-500">1:10 scale (270 cap.)</div>
             </div>
             <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3">
-              <div class="text-[11px] font-medium text-slate-400" title="Bloqueos deterministas: porcentaje de casos ambiguos identificados y bloqueados dentro del conjunto de prueba (pre-flight guardrail)">Bloqueos Deterministas</div>
+              <div class="text-[11px] font-medium text-slate-400" title="Deterministic Interceptions: percentage of ambiguous cases identified and short-circuited in pre-flight without invoking LLM">Deterministic Interceptions</div>
               <div id="metricBlockedCount" class="mt-0.5 text-lg font-extrabold text-emerald-400">100% Guarded</div>
-              <div class="text-[10px] text-slate-400 truncate" title="Porcentaje de casos ambiguos identificados y bloqueados dentro del conjunto de prueba">Casos ambiguos test set</div>
+              <div class="text-[10px] text-slate-400 truncate" title="Percentage of ambiguous cases identified and short-circuited in pre-flight without invoking LLM">Ambiguous test cases</div>
             </div>
             <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3">
-              <div class="text-[11px] font-medium text-slate-400" title="Atribuciones verificadas: porcentaje de afirmaciones evaluadas que cuentan con evidencia suficiente en el historial (SHA y ruta)">Atribuciones Verificadas</div>
+              <div class="text-[11px] font-medium text-slate-400" title="Verified Attributions: percentage of evaluated explanatory claims backed by commit SHA, file path, and lexical entity grounding">Verified Attributions</div>
               <div id="metricAttributionsCount" class="mt-0.5 text-lg font-extrabold text-teal-400">100% Grounded</div>
-              <div class="text-[10px] text-slate-400 truncate" title="Porcentaje de afirmaciones evaluadas que cuentan con evidencia suficiente en el historial">Evidencia en git log</div>
+              <div class="text-[10px] text-slate-400 truncate" title="Percentage of evaluated explanatory claims backed by commit SHA, file path, and lexical entity grounding">Evidence in git log</div>
             </div>
             <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3">
               <div class="text-[11px] font-medium text-slate-400">Inference Cost</div>
@@ -466,12 +466,12 @@
                   <div class="mt-0.5 text-slate-300">Python extracts exact commit SHAs and diff hunks deterministically before calling Gemma.</div>
                 </div>
                 <div class="rounded-lg border border-amber-500/30 bg-amber-950/30 p-2.5">
-                  <div class="font-bold text-amber-300">2. Bloqueos Deterministas (<code class="font-mono-code">guardrail.vague_commit</code>)</div>
-                  <div class="mt-0.5 text-slate-300">100% de casos ambiguos identificados y bloqueados en pre-flight dentro del benchmark de prueba.</div>
+                  <div class="font-bold text-amber-300">2. Deterministic Interceptions (<code class="font-mono-code">guardrail.vague_commit</code>)</div>
+                  <div class="mt-0.5 text-slate-300">100% of ambiguous cases identified and short-circuited in pre-flight within the benchmark test set.</div>
                 </div>
                 <div class="rounded-lg border border-purple-500/30 bg-purple-950/30 p-2.5">
-                  <div class="font-bold text-purple-300">3. Atribuciones Verificadas (<code class="font-mono-code">guardrail.verify_sha</code>)</div>
-                  <div class="mt-0.5 text-slate-300">100% de afirmaciones evaluadas cuentan con evidencia suficiente en el historial git (SHA y ruta).</div>
+                  <div class="font-bold text-purple-300">3. Verified Attributions (<code class="font-mono-code">guardrail.verify_sha</code>)</div>
+                  <div class="mt-0.5 text-slate-300">100% of evaluated claims backed by verified git log evidence (SHA and file path).</div>
                 </div>
               </div>
             </div>
@@ -1216,6 +1216,32 @@ jobs:
     // =========================================================================
     // EVENT WIRING & INITIALIZATION
     // =========================================================================
+    async function updateConnectionStatusBadge() {
+      const badge = document.getElementById("connectionStatusBadge");
+      if (!badge) return;
+      const modeSelect = document.getElementById("ollamaModeSelect");
+      if (modeSelect && modeSelect.value === "grounded_sim") {
+        badge.className = "rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300";
+        badge.textContent = "🟡 Offline Demo Mode (Deterministic Pre-baked Relics)";
+        return;
+      }
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1200);
+        const res = await fetch("http://localhost:11434/api/tags", { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          badge.className = "rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300";
+          badge.textContent = "🟢 Connected to Local Ollama (127.0.0.1:11434)";
+          return;
+        }
+      } catch (err) {
+        // unreachable or blocked in browser sandbox
+      }
+      badge.className = "rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300";
+      badge.textContent = "🟡 Offline Demo Mode (Deterministic Pre-baked Relics)";
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       loadSavedState();
       renderTombstoneList();
@@ -1223,6 +1249,11 @@ jobs:
       selectSpirit(selectedSpiritId);
       renderSentryTableAndChart();
       renderPrizeChecklist();
+      const modeSelectEl = document.getElementById("ollamaModeSelect");
+      if (modeSelectEl) {
+        modeSelectEl.addEventListener("change", updateConnectionStatusBadge);
+      }
+      updateConnectionStatusBadge();
 
       // Tab Switching
       document.querySelectorAll(".nav-tab-btn").forEach((btn) => {
