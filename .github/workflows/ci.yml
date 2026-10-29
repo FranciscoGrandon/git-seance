@@ -1,0 +1,79 @@
+# ===============================================================================
+# 🌼🕯️ GitSéance: Continuous Integration & Code Quality Matrix 🕯️🌼
+# Creado por Francisco Grandón Vergara
+# Hacktoberfest 2026 Open-Source AI Challenge: Week 4 ("Ghost in the Machine")
+# ===============================================================================
+
+name: Continuous Integration & Quality Matrix
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Code Quality, Lint & AST Hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Linting Tools
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install ruff
+
+      - name: Run Ruff Code Inspection
+        run: ruff check git_seance.py server.py test_git_seance.py test_html_ofrenda.py test_server.py
+
+      - name: Validate Python AST Syntax
+        run: python3 -m py_compile git_seance.py server.py test_git_seance.py test_html_ofrenda.py test_server.py
+
+  test-matrix:
+    name: Test Suite (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - name: Checkout Repository with Full Git History
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python ${{ matrix.python-version }} Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Complete Unit Test Suite (47 tests)
+        run: python3 -m unittest test_git_seance.py test_html_ofrenda.py test_server.py -v
+
+      - name: Smoke Test GitSéance CLI in Offline Mode
+        run: |
+          python3 git_seance.py --offline --symbol test_symbol --limit 1
+          python3 git_seance.py --mictlan-quine
+
+      - name: Smoke Test Server Imports & Security Configuration
+        run: python3 -c "import server; print('✅ GitSéance production server loaded successfully')"
