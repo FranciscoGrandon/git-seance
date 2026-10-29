@@ -73,7 +73,7 @@ jobs:
       - name: Smoke Test GitSéance CLI in Offline Mode
         run: |
           python3 git_seance.py --offline --symbol test_symbol --limit 1
-          python3 git_seance.py --mictlan-quine
+          python3 git_seance.py --mictlan
 
       - name: Smoke Test Server Imports & Security Configuration
         run: python3 -c "import server; print('✅ GitSéance production server loaded successfully')"
